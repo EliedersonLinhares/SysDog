@@ -7,15 +7,15 @@ Sistema de Gerenciamento de Hospedaria de animais
 Este sistema foi desenvolvido em 2017 para uso de um cliente que precisava de gerenciar uma hospedaria, agora
 tendo em vista ajudar outros desenvolvedores hospedei aqui o codigo-fonte usado no desenvolvimento.
 
-Telas de cadastros de Usuários,Clientes,Animais,Produtos,Fornecedores,Locais
+Telas de cadastros de UsuÃ¡rios,Clientes,Animais,Produtos,Fornecedores,Locais
 
 ![](SAnimais.png)
 
-Operações de Cria��o de estadias dos animais cadastrados usando o calendar
+Operaçõess de Criação de estadias dos animais cadastrados usando o calendar
 
 ![](SEstadia.png)
 
-Sistema de compra e venda de produtos (Sem emissão de NF)
+Sistema de compra e venda de produtos (Sem emitir NF)
 
 ![](SCompras.png)
 
@@ -64,8 +64,8 @@ elas estão na pasta src/test/java
 ## Bugs
 
 Esse sistema foi testado no navegador Mozzila Firefox, em teste no Chrome foram observados
-algumas falhas de renderiz�o do login mas que n�o afetam as fun��es do sistema, provalvemente
-causadas pelo intera��o bootstrap com Primefaces. 
+algumas falhas de renderizão do login mas que não afetam as funções do sistema, provalvemente
+causadas pelo interação bootstrap com Primefaces. 
 
 ## Softwares Usados
 
@@ -73,12 +73,12 @@ causadas pelo intera��o bootstrap com Primefaces.
 * [Primefaces 6.1](https://www.primefaces.org/) - Gerenciamento da interface JSF
 * [Bootstrap](https://getbootstrap.com/) - CSS utilizado
 * [MariaDB 10.x](https://mariadb.org/) - Banco de dados usado
-* [Maven](https://maven.apache.org/) - Gerenciamento de dependências
+* [Maven](https://maven.apache.org/) - Gerenciamento de dependÃªncias
 * [Apache 9.0](https://www.apache.org/) - Servidor usado
 * [JasperSoft](https://community.jaspersoft.com/download) - Criação de relatórios
 
 
-## Versão
+## VersÃ£o
 
 A versão colocada aqui é a usada durande o desenvolvimento sendo considerada versão beta 0.1
 
@@ -86,18 +86,18 @@ A versão colocada aqui é a usada durande o desenvolvimento sendo considerada v
 
 * Este sistema foi o primero desenvolvido por mim, então aprendi bastante para conseguir finaliza-lo
 espero que o código-fonte possa lhe ajudar 
-* Todas as tabelas usam o modo Lazy incluse o Calendario usado na parte de estadias tambem está no modo lazy
+* Todas as tabelas usam o modo Lazy incluse o Calendario usado na parte de estadias tambem estão no modo lazy
 , conseguir um exemplo foi bem dificil.
 
 ## Futuro
 
-* Com o tempo pretendo atualizar toda a parte grafica do projeto, a combinação Bootstrap + primefaces é bem complicada
+* Com o tempo pretendo atualizar toda a parte grafica do projeto, a combinação Bootstrap + primefaces Ã© bem complicada
 , com isso pretendo migrar para o AdminFaces.
 * A parte da segurança foi feita manualmente com uso do PhaseListener, não é o ideal hoje em dia, mas como era um sitema 
 para uso interno foi adotado, atualmente estudo a troca pelo Apache Shiro ou Spring Security
 * A parte de imagens foi feita com uso de avatares com imagens armazendas no proprio projeto o que não é uma boa prática,
 em uma versão futura pode se adotar uso do Amazon S3 para armazenamento
-* O cliente optou por não usar Graficos interativos(Charts) mais o o mesmo poderá ser usado em outras versões
+* O cliente optou por não usar Gráficos interativos(Charts) mais o o mesmo poderá ser usado em outras versões
 
 ## Referências
 
