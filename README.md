@@ -25,8 +25,9 @@ Sistema de Historico onde comprovantes podem ser impressos
 
 ### Manual
 
-Para melhor entendimento das funções do sistema use o PDF 
+Para melhor entendimento das funções do sistema use o PDF:
 
+* [SysDog01.pdf](https://drive.google.com/file/d/1HZhjSEavL59AoQievFgfQgtus6e4iWTJ/view?usp=sharing)
 
 ### Requisitos
 
@@ -46,8 +47,8 @@ Dentro do projeto navegue até a pasta src/test/java
 No pacote com.esl.test execute o arquivo ConfiguracaoInical.java com "run as..." , "Junit Test"
 ```
 ```
-Este arquivo contem o método que executará a criação das tabelas e inserção de dois usuarios e outros dados
-para maiores informações, veja os dados contidos na classe.
+Este arquivo contem o método que executará a criação das tabelas e inserção de dois usuarios 
+e outros dados para maiores informações, veja os dados contidos na classe.
 ```
 ```
 Agora basta executar o sistema com o Apache, os logins colocados para exemplo são
@@ -73,12 +74,12 @@ causadas pelo interação bootstrap com Primefaces.
 * [Primefaces 6.1](https://www.primefaces.org/) - Gerenciamento da interface JSF
 * [Bootstrap](https://getbootstrap.com/) - CSS utilizado
 * [MariaDB 10.x](https://mariadb.org/) - Banco de dados usado
-* [Maven](https://maven.apache.org/) - Gerenciamento de dependÃªncias
+* [Maven](https://maven.apache.org/) - Gerenciamento de dependências
 * [Apache 9.0](https://www.apache.org/) - Servidor usado
 * [JasperSoft](https://community.jaspersoft.com/download) - Criação de relatórios
 
 
-## VersÃ£o
+## Versão
 
 A versão colocada aqui é a usada durande o desenvolvimento sendo considerada versão beta 0.1
 
@@ -91,7 +92,7 @@ espero que o código-fonte possa lhe ajudar
 
 ## Futuro
 
-* Com o tempo pretendo atualizar toda a parte grafica do projeto, a combinação Bootstrap + primefaces Ã© bem complicada
+* Com o tempo pretendo atualizar toda a parte grafica do projeto, a combinação Bootstrap + primefaces é bem complicada
 , com isso pretendo migrar para o AdminFaces.
 * A parte da segurança foi feita manualmente com uso do PhaseListener, não é o ideal hoje em dia, mas como era um sitema 
 para uso interno foi adotado, atualmente estudo a troca pelo Apache Shiro ou Spring Security
