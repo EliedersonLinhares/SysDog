@@ -7,7 +7,7 @@ Sistema de Gerenciamento de Hospedaria de animais
 Este sistema foi desenvolvido em 2017 para uso de um cliente que precisava de gerenciar uma hospedaria, agora
 tendo em vista ajudar outros desenvolvedores hospedei aqui o codigo-fonte usado no desenvolvimento.
 
-Telas de cadastros de UsuÃ¡rios,Clientes,Animais,Produtos,Fornecedores,Locais
+Telas de cadastros de Usuários,Clientes,Animais,Produtos,Fornecedores,Locais
 
 ![](SAnimais.png)
 
