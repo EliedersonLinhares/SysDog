@@ -87,7 +87,7 @@ A versão colocada aqui é a usada durande o desenvolvimento sendo considerada v
 
 * Este sistema foi o primero desenvolvido por mim, então aprendi bastante para conseguir finaliza-lo
 espero que o código-fonte possa lhe ajudar 
-* Todas as tabelas usam o modo Lazy incluse o Calendario usado na parte de estadias tambem estão no modo lazy
+* Todas as tabelas usam o modo Lazy inclusive o Calendario usado na parte de estadias tambem estão no modo lazy
 , conseguir um exemplo foi bem dificil.
 
 ## Futuro
