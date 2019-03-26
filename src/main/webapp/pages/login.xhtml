@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1"/>
+	<title>Login</title>
+
+ <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+<style>
+body  {
+    /* The image used */
+    background-image: url(../resources/images/bg1.jpg);
+
+    /* Full height */
+    height: 100%; 
+
+    /* Center and scale the image nicely */
+    background-color: #cccccc;
+    background-repeat: no-repeat;
+   
+}
+</style>
+ 
+</h:head>
+
+
+<h:body >
+<link href="#{pageContext.request.contextPath}/css/login.css" rel="stylesheet" type="text/css" />
+ <p:growl id="mensagem"/>
+
+	
+	<p:dialog   closable="false" draggable="false"
+		resizable="false"  visible="true" responsive="true">
+		<h:form>
+		
+			<p:separator />
+			<h:panelGrid columns="2">
+			
+			    <p:outputLabel for="login" value="Login:" />
+				<p:inputText id="login" required="true"
+	            requiredMessage="O campo 'Login' é obrigatório"
+	             value="#{autenticacaoBean.usuario.login}"  size="30" placeholder="Digite seu login..."/>
+	            <p:outputLabel for="senha" value="Senha:" />
+	           <p:password  id="senha"  maxlength="32" required="true"
+	            requiredMessage="O campo 'Senha' é obrigatório"
+	            value="#{autenticacaoBean.usuario.senha}" size="30" placeholder="Digite sua senha..."/>
+	            
+			</h:panelGrid>
+<p:separator />
+			<h:panelGrid columns="1">
+				 <p:commandButton value="Entrar" update=":mensagem"
+	              actionListener="#{autenticacaoBean.autenticar}"  icon="ui-icon-locked"/>
+	              
+	               <p:commandButton value="Salvar Primeiro Usuario" update=":mensagem"
+	              actionListener="#{autenticacaoBean.salvarPrimeiroUsuario}"  icon="ui-icon-locked"/>
+	              
+	              
+			</h:panelGrid>
+		</h:form>
+	</p:dialog>
+	
+</h:body>
+</html>

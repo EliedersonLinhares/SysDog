@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	template="/templates/modelo5.xhtml">
+
+
+
+
+<ui:define name="conteudo">
+
+	<h:form id="formListagem">
+		<p:panel header="Lista de Compras Efetuadas" >
+		
+		<p:toolbar style="margin:5px 10px">
+		<f:facet name="right">
+						<h:commandLink>
+                          <p:graphicImage value="/resources/images/excel2.png" height="34" width="34" title="Exportar para Excel"/>
+                           <p:dataExporter type="xls" target="tabela" fileName="animais" />
+                      </h:commandLink>
+					</f:facet>
+		</p:toolbar>
+
+				<p:dataTable id="tabela" emptyMessage="Nenhum registro encontrado."  lazy="true"
+				paginator="true" value="#{compraListaBean.dataModel}" var="compra" rows="5" 
+				paginatorPosition="bottom" paginatorTemplate= "{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+                 >
+				
+                <p:column style="width: 50px;" exportable="false" priority="3">
+                <p:rowToggler/>
+                
+                </p:column>
+				<p:column headerText="Horário" sortBy="#{compra.horario}"  style="text-align: center" >
+					<h:outputText value="#{compra.horario}">
+					<f:convertDateTime locale="pt_BR" pattern="dd/MM/yyyy HH:mm" timeZone="America/Sao_Paulo"/>
+					</h:outputText>
+				</p:column>
+				
+				<p:column headerText="Preço Total (R$) " sortBy="#{compra.precoTotal}"  style="text-align: center"  priority="1">
+					<h:outputText value="#{compra.precoTotal}">
+					<f:convertNumber locale="pt_BR" minFractionDigits="2"/>
+					</h:outputText>
+				</p:column>
+				
+				
+				<p:column headerText="Funcionário"   style="text-align: center"  priority="4">
+					<h:outputText value="#{compra.usuario.nome}" />
+				</p:column>
+				
+				<p:column headerText="Opções"  toggleable="false"  exportable="false">
+			
+				</p:column>
+				
+			<p:rowExpansion>
+						<p:dataTable emptyMessage="Nenhum registro encontrado."
+							value="#{compra.itensCompra}" var="itemCompra">
+							
+							<p:column headerText="Produto">
+							<h:outputText value="#{itemCompra.produto.descricao}" />
+							</p:column>
+							
+							<p:column headerText="Tipo"  style="text-align: center"  priority="4">
+								<h:outputText value="#{itemCompra.produto.tipo}" />
+							</p:column>
+							
+							<p:column headerText="Peso (Kg)"  style="text-align: center"  priority="2">
+								<h:outputText value="#{itemCompra.produto.peso}" />
+							</p:column>
+							
+							<p:column headerText="Preço Unidade(R$)"  style="text-align: center"  priority="3">
+								<h:outputText value="#{itemCompra.precoUnidade}">
+									<f:convertNumber locale="pt_BR" minFractionDigits="2" />
+								</h:outputText>
+							</p:column>
+							
+							<p:column headerText="Desconto (R$)"  style="text-align: center"  priority="3">
+								<h:outputText value="#{itemCompra.desconto}">
+									<f:convertNumber locale="pt_BR" minFractionDigits="2" />
+								</h:outputText>
+							</p:column>
+							<p:column headerText="Qtde"  style="text-align: center"  priority="3">
+								<h:outputText value="#{itemCompra.quantidade}" />
+							</p:column>
+							
+							<p:column headerText="Preço (R$)"  style="text-align: center"  priority="1">
+								<h:outputText value="#{itemCompra.precoParcial}">
+									<f:convertNumber locale="pt_BR" minFractionDigits="2" />
+								</h:outputText>
+							</p:column>
+						</p:dataTable>
+					</p:rowExpansion>
+
+			</p:dataTable>
+
+		
+		</p:panel>
+	</h:form>
+
+	
+</ui:define>
+</ui:composition>

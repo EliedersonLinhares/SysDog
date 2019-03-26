@@ -1,0 +1,72 @@
+
+body  {
+    /* The image used */
+    background-image: url(../resources/images/bg1.jpg);
+
+    /* Full height */
+    height: 100%; 
+
+    /* Center and scale the image nicely */
+    background-color: #cccccc;
+    background-repeat: no-repeat;
+   
+}
+
+
+.loginTD {
+
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.wrapper {	
+	margin-top: 300px; 
+	
+
+	
+}
+
+.wrapper1 {	
+	margin-top: 800px; 
+	
+}
+
+.container-fluid {
+	 /* The image used */
+    background-image: url(../resources/images/bg1.jpg);
+
+    /* Full height */
+    height: 100%; 
+
+    /* Center and scale the image nicely */
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}	
+
+
+.form-signin {
+  max-width: 460px;
+  padding: 1px 4px 14px;
+  margin: 0 auto;
+
+  background-color: #fff;
+  border: 1px solid rgba(0,0,0,0.1);  
+	
+}
+
+@media (min-width: @screen-sm-min) {
+	.wrapper {	
+	margin-left: 0px; 
+	
+}
+
+@media (max-width: 970px) {
+	.wrapper {	
+	margin-left: 300px; 
+	
+}
+
+
+
+}

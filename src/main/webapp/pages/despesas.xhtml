@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	template="/templates/modelo5.xhtml">
+	
+<ui:define name="conteudo">
+<h:outputScript library="js" name="scripts.js"/>
+	<h:form id="formListagem">
+		<p:panel header="Lista de Despesas Cadastradas">
+		
+		<p:toolbar style="margin:5px 10px">
+					<f:facet name="left">
+						<p:commandButton value="Novo" icon="ui-icon-document"
+							actionListener="#{despesaBeanLazy.novo}"
+							update=":mensagem :formCadastro"
+							oncomplete="PF('dialogo').show();" title="Cadastrar nova Despesa">
+							<!-- Uso do omnifaces para resetar campos depois de requisições de validação -->
+							<f:actionListener
+								type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+						</p:commandButton>
+						<span class="ui-separator"> <span
+							class="ui-icon ui-icon-grip-dotted-vertical" />
+						</span>
+					</f:facet>
+
+
+					<f:facet name="right">
+						<h:commandLink>
+                          <p:graphicImage value="/resources/images/excel2.png" height="34" width="34" title="Exportar para Excel"/>
+                           <p:dataExporter type="xls" target="tabela" fileName="despesas" />
+                      </h:commandLink>
+					</f:facet>
+				</p:toolbar>
+			
+			<p:dataTable id="tabela" emptyMessage="Nenhum registro encontrado." lazy="true"
+				paginator="true" value="#{despesaBeanLazy.dataModel}" var="despesa" rows="5"
+				 paginatorPosition="bottom" paginatorTemplate= "{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+                 rowsPerPageTemplate="5,10" >
+
+				<p:column headerText="Tipo" filterBy="#{despesa.tipo}" sortBy="#{despesa.tipo}" style="text-align: center" priority="4">
+				<h:outputText value="#{despesa.tipo}" />
+				</p:column>
+				
+				<p:column headerText="Descrição"  filterBy="#{despesa.descricao}" style="text-align: center" priority="1">
+				<h:outputText value="#{despesa.descricao}" />
+				</p:column>
+
+				<p:column headerText="Inclusão" sortBy="#{despesa.dataInclusao}" style="text-align: center" priority="3">
+				<h:outputText value="#{despesa.dataInclusao}" >
+				<f:convertDateTime locale="pt_BR"/>
+				</h:outputText>
+				</p:column>
+				
+				<p:column headerText="Vencimento" sortBy="#{despesa.dataVencimento}" style="text-align: center" priority="1">
+				<h:outputText value="#{despesa.dataVencimento}" >
+				<f:convertDateTime locale="pt_BR"/>
+				</h:outputText>
+				</p:column>
+				
+				<p:column headerText="Valor (R$)" sortBy="#{despesa.valor}"  style="text-align: center" priority="2">
+				<h:outputText value="#{despesa.valor}" >
+				<f:convertNumber locale="pt_BR" minFractionDigits="2"/><!--Conversão para moeda corrente no brasil(uso da virgula)  -->
+				</h:outputText>
+				</p:column>
+				
+				<p:column headerText="Pagamento" sortBy="#{despesa.dataPagamento}" style="text-align: center" priority="3">
+				<h:outputText value="#{despesa.dataPagamento}" >
+				<f:convertDateTime locale="pt_BR"/>
+				</h:outputText>
+				</p:column>
+				
+				<p:column headerText="Status" sortBy="#{despesa.status}" style="text-align: center"  priority="2">
+				<h:outputText value="#{despesa.status}" />
+				</p:column>
+				
+	
+
+				<p:column headerText="Opções"  toggleable="false" style="text-align: center" exportable="false">
+				 
+
+					<p:commandButton icon="ui-icon-pencil"
+						actionListener="#{despesaBeanLazy.editar}"
+						update=":mensagem :formCadastro"
+						oncomplete="PF('dialogo').show();" title="Editar Cadastro">
+						<f:attribute name="despesaSelecionada" value="#{despesa}" />
+						<!-- Uso do omnifaces para resetar campos depois de requisições de validação -->
+						<f:actionListener
+							type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+					</p:commandButton>
+				   <p:commandButton icon="ui-icon-calculator"
+						actionListener="#{despesaBeanLazy.editar}"
+						update=":mensagem :formCadastro2"
+						oncomplete="PF('dialogo2').show();" title="Confirmar Pagamento"  disabled="#{despesa.status eq 'Pago'}">
+						<f:attribute name="despesaSelecionada" value="#{despesa}" />
+						<!-- Uso do omnifaces para resetar campos depois de requisições de validação -->
+						<f:actionListener
+							type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+					</p:commandButton>
+				
+				</p:column>
+
+			</p:dataTable>
+	
+			
+		</p:panel>
+	</h:form>
+
+	<p:dialog header="Despesas - Cadastro" widgetVar="dialogo"
+		draggable="false" resizable="false" modal="true" closable="true" responsive="true">
+		
+		<h:form id="formCadastro">
+		
+		<p:tabView id="cad1" cache="false">  
+        <p:tab title="Dados do despesa"> 
+        
+        <p:panelGrid  columns="2" layout="grid" styleClass="ui-panelgrid-blank" columnClasses="ui-grid-col-4,ui-grid-col-8">
+        
+				<p:outputLabel for="tipo" value="Tipo:" />
+				<p:selectOneMenu id="tipo" value="#{despesaBeanLazy.despesa.tipo}" required="true"
+					requiredMessage="O campo 'Tipo' é obrigatório" >
+                      <f:selectItem noSelectionOption="true" itemLabel="Selecione o tipo" />
+                      <f:selectItem itemLabel="Taxas de Propriedade(luz,Água,Gás)" itemValue="Taxas de Propriedade(luz,Água,Gás)" />
+                      <f:selectItem itemLabel="Telefone e Internet" itemValue="Telefone e Internet" />
+                      <f:selectItem itemLabel="Materiais de Limpeza" itemValue="Materiais de Limpeza" />
+                      <f:selectItem itemLabel="Materiais de Escritório" itemValue="Materiais de Escritório"/>
+                      <f:selectItem itemLabel="Seguros e Sistemas de segurança" itemValue="Seguros e Sistemas de segurança"/>
+                      <f:selectItem itemLabel="Legais e Jurídico" itemValue="Legais e Jurídico"/>
+                      <f:selectItem itemLabel="Pró Labore" itemValue="Pró Labore"/>
+                      <f:selectItem itemLabel="Salário" itemValue="Salário"/>
+                      <f:selectItem itemLabel="Aluguel" itemValue="Aluguel"/>
+                       <f:selectItem itemLabel="Outros" itemValue="Outros"/> 
+	              </p:selectOneMenu>
+				
+				<p:outputLabel value="Descrição:" />
+				<p:inputText maxlength="80" size="30" value="#{despesaBeanLazy.despesa.descricao}" required="true"
+					requiredMessage="O campo 'Descrição' é obrigatório" />
+				
+				 <p:outputLabel value="Data de Inclusão:"/>
+				   <h:outputText value="#{despesaBeanLazy.despesa.dataInclusao}">
+					<f:convertDateTime pattern="dd/MM/yyyy" locale="pt_BR"
+						timeZone="America/Sao_Paulo" />
+				</h:outputText>
+				
+				<p:outputLabel for="dataVencimento" value="Data de Vencimento:" />
+				<p:calendar id="dataVencimento"  pattern="dd/MM/yyyy" locale="pt" value="#{despesaBeanLazy.despesa.dataVencimento}" required="true"
+				   requiredMessage="O campo 'Data de Vencimento' é obrigatório"  />
+				
+	    </p:panelGrid>
+		   </p:tab>  
+		   
+        <p:tab title="Complemento"> 
+        <p:panelGrid  columns="2" layout="grid" styleClass="ui-panelgrid-blank" columnClasses="ui-grid-col-4,ui-grid-col-8">
+        
+           <p:outputLabel for="valor" value="Valor:" />
+				<p:inputText id="valor" maxlength="8" size="10"
+					value="#{despesaBeanLazy.despesa.valor}" required="true"
+					requiredMessage="O campo 'Valor' é obrigatório" 
+					converterMessage="Informe um valor válido para o campo 'Preço'"
+					validatorMessage="Informe um valor entre 0,01 e 99999.99 para o campo preço"><!-- Edição da mensagem do validador -->
+					<f:validateDoubleRange minimum="0.01" maximum="99999.99"/><!--Validador para campo Double,bigdecimal...  -->
+					<f:convertNumber locale="pt_BR" minFractionDigits="2"/><!--Conversão para moeda corrente no brasil(uso da virgula)  -->
+					</p:inputText>
+		
+			</p:panelGrid>
+		   </p:tab>  
+
+			</p:tabView> 
+			<p:separator />
+			<p:panelGrid columns="2" styleClass="ui-noborder ">
+			   <p:commandButton value="Salvar"
+			   actionListener="#{despesaBeanLazy.salvar}" icon=" ui-icon-disk"
+			   update=":mensagem :formCadastro :formListagem:tabela" />
+			   
+			   <p:commandButton value="Fechar" oncomplete="PF('dialogo').hide();" icon="ui-icon-closethick"/>
+			</p:panelGrid>
+		</h:form>
+	</p:dialog>
+	
+	
+	<p:dialog header="Despesas - Confirmar Pagamento" widgetVar="dialogo2"
+		draggable="false" resizable="false" modal="true" closable="true" responsive="true">
+		
+		<h:form id="formCadastro2"> 
+        
+        <p:panelGrid  columns="2" layout="grid" styleClass="ui-panelgrid-blank" columnClasses="ui-grid-col-4,ui-grid-col-8">
+        
+				
+				<p:outputLabel for="valor" value="Valor:"  />
+				<p:inputText id="valor" maxlength="8" size="10" 
+					value="#{despesaBeanLazy.despesa.valor}" required="true"
+					requiredMessage="O campo 'Valor' é obrigatório" 
+					converterMessage="Informe um valor válido para o campo 'Preço'"
+					validatorMessage="Informe um valor entre 0,01 e 99999.99 para o campo preço"><!-- Edição da mensagem do validador -->
+					<f:validateDoubleRange minimum="0.01" maximum="99999.99"/><!--Validador para campo Double,bigdecimal...  -->
+					<f:convertNumber locale="pt_BR" minFractionDigits="2"/><!--Conversão para moeda corrente no brasil(uso da virgula)  -->
+					</p:inputText>
+				
+				<p:outputLabel for="dataPagamento" value="Data de Pagamento:" />
+				<p:calendar id="dataPagamento" pattern="dd/MM/yyyy" locale="pt" value="#{despesaBeanLazy.despesa.dataPagamento}" />
+				
+				
+				
+	    </p:panelGrid>
+			<p:separator />
+			<p:panelGrid columns="2" styleClass="ui-noborder ">
+			   <p:commandButton value="Salvar"
+			   actionListener="#{despesaBeanLazy.ConfirmarPagamento}" icon=" ui-icon-disk"
+			   update=":mensagem :formCadastro2 :formListagem:tabela"  oncomplete="PF('dialogo2').hide();" />
+			   
+			   <p:commandButton value="Fechar" oncomplete="PF('dialogo2').hide();"  icon="ui-icon-closethick"/>
+			</p:panelGrid>
+		</h:form>
+	</p:dialog>
+	
+	
+	
+	
+</ui:define>
+</ui:composition>

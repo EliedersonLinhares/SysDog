@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	template="/templates/modelo5.xhtml">
+	
+<ui:define name="conteudo">
+
+	<h:form id="formListagem">
+		<p:panel header="Lista de Fabricantes Cadastrados">
+		
+		<p:toolbar style="margin:5px 10px">
+					<f:facet name="left">
+						<p:commandButton value="Novo" icon="ui-icon-document"
+							actionListener="#{fornecedorBeanLazy.novo}"
+							update=":mensagem :formCadastro"
+							oncomplete="PF('dialogo').show();" title="Cadastrar novo Fornecedor">
+							<!-- Uso do omnifaces para resetar campos depois de requisições de validação -->
+							<f:actionListener
+								type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+						</p:commandButton>
+						<span class="ui-separator"> <span
+							class="ui-icon ui-icon-grip-dotted-vertical" />
+						</span>
+					</f:facet>
+
+
+					<f:facet name="right">
+						<h:commandLink>
+                          <p:graphicImage value="/resources/images/excel2.png" height="34" width="34" title="Exportar para Excel"/>
+                           <p:dataExporter type="xls" target="tabela" fileName="fabricantes" />
+                      </h:commandLink>
+					</f:facet>
+				</p:toolbar>
+			
+			<p:dataTable id="tabela" emptyMessage="Nenhum registro encontrado." lazy="true"
+				paginator="true" value="#{fornecedorBeanLazy.dataModel}" var="fornecedor" rows="5"
+				 paginatorPosition="bottom" paginatorTemplate= "{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+                 rowsPerPageTemplate="5,10" >
+
+				<p:column headerText="Nome" filterBy="#{fornecedor.nomeF}" sortBy="#{fornecedor.nomeF}" style="text-align: center">
+				<h:outputText value="#{fornecedor.nomeF}" />
+				</p:column>
+				
+				<p:column headerText="Descrição" style="text-align: center" priority="4">
+				<h:outputText value="#{fornecedor.descricaoF}" />
+				</p:column>
+
+				<p:column headerText="Telefone" style="text-align: center" priority="1">
+				<h:outputText value="#{fornecedor.telefone}" />
+				</p:column>
+				
+				<p:column headerText="Contato" style="text-align: center" priority="5">
+				<h:outputText value="#{fornecedor.contato}" />
+				</p:column>
+				
+				<p:column headerText="Celular" style="text-align: center" priority="5">
+				<h:outputText value="#{fornecedor.celular}" />
+				</p:column>
+				
+				<p:column headerText="Email" style="text-align: center"  priority="6">
+				<h:outputText value="#{fornecedor.email}" />
+				</p:column>
+				
+	
+
+				<p:column headerText="Opções"  toggleable="false" style="text-align: center" exportable="false">
+				 
+
+					<p:commandButton icon="ui-icon-pencil"
+						actionListener="#{fornecedorBeanLazy.editar}"
+						update=":mensagem :formCadastro"
+						oncomplete="PF('dialogo').show();" title="Editar Cadastro">
+						<f:attribute name="fornecedorSelecionado" value="#{fornecedor}" />
+						<!-- Uso do omnifaces para resetar campos depois de requisições de validação -->
+						<f:actionListener
+							type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+					</p:commandButton>
+				
+				
+				</p:column>
+
+			</p:dataTable>
+	
+			
+		</p:panel>
+	</h:form>
+
+	<p:dialog header="Fabricantes - Cadastro" widgetVar="dialogo"
+		draggable="false" resizable="false" modal="true" closable="true" responsive="true">
+		
+		<h:form id="formCadastro">
+		
+		<p:tabView id="cad1" cache="false">  
+        <p:tab title="Dados do Fabricante"> 
+        
+        <p:panelGrid  columns="2" layout="grid" styleClass="ui-panelgrid-blank" columnClasses="ui-grid-col-4,ui-grid-col-8">
+        
+				<p:outputLabel for="nome" value="Nome:" />
+				<p:inputText  id="nome" maxlength="50" size="30" 
+				value="#{fornecedorBeanLazy.fornecedor.nomeF}" required="true"
+			    requiredMessage="O campo 'Nome' é obrigatório"/>
+	
+				<p:outputLabel value="Descrição:" />
+				<p:inputText maxlength="80" size="30" value="#{fornecedorBeanLazy.fornecedor.descricaoF}"/>
+				
+				<p:outputLabel for="telefone" value="Telefone:" />
+				<p:inputMask id="telefone" mask="(99)9999-9999"  size="15" 
+				value="#{fornecedorBeanLazy.fornecedor.telefone}" required="true"
+			    requiredMessage="O campo 'Telefone' é obrigatório"/>
+				
+	    </p:panelGrid>
+		   </p:tab>  
+		   
+        <p:tab title="Contato"> 
+        <p:panelGrid  columns="2" layout="grid" styleClass="ui-panelgrid-blank" columnClasses="ui-grid-col-4,ui-grid-col-8">
+        
+              <p:outputLabel value="Contato:" />
+				<p:inputText maxlength="50" size="30" value="#{fornecedorBeanLazy.fornecedor.contato}"/>
+				
+				<p:outputLabel value="Celular:" />
+				<p:inputMask mask="(99)99999-9999" size="15" value="#{fornecedorBeanLazy.fornecedor.celular}"/>
+				
+				<p:outputLabel value="Email:"/>
+				<p:inputText maxlength="50" size="30"  value="#{fornecedorBeanLazy.fornecedor.email}"/>
+		
+			</p:panelGrid>
+		   </p:tab>  
+		   
+		   
+			</p:tabView> 
+			<p:separator />
+			<p:panelGrid columns="2" styleClass="ui-noborder ">
+			   <p:commandButton value="Salvar"
+			   actionListener="#{fornecedorBeanLazy.salvar}" icon=" ui-icon-disk"
+			   update=":mensagem :formCadastro :formListagem:tabela" />
+			   
+			   <p:commandButton value="Fechar" oncomplete="PF('dialogo').hide();" icon="ui-icon-closethick"/>
+			</p:panelGrid>
+			
+
+		</h:form>
+	</p:dialog>
+</ui:define>
+</ui:composition>

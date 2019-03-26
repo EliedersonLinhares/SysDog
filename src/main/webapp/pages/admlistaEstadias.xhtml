@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	template="/templates/modelo5.xhtml">
+
+
+
+
+<ui:define name="conteudo">
+
+	<h:form id="formListagem">
+		<p:panel header="Lista de Estadias" >
+		
+		<p:toolbar style="margin:5px 10px">
+		<f:facet name="right">
+						<h:commandLink>
+                          <p:graphicImage value="/resources/images/excel2.png" height="34" width="34" title="Exportar para Excel"/>
+                           <p:dataExporter type="xls" target="tabela" fileName="estadias" />
+                      </h:commandLink>
+					</f:facet>
+		</p:toolbar>
+
+				<p:dataTable id="tabela" emptyMessage="Nenhum registro encontrado." lazy="true"
+				paginator="true" value="#{estadiaListaBeanLazy.dataModel}" var="estadia" rows="5" 
+				paginatorPosition="bottom"  paginatorTemplate= "{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+                 rowsPerPageTemplate="5,10">
+				
+                
+               
+				<p:column headerText="Animal" style="text-align: center" >
+					<h:outputText value="#{estadia.animal.nome}" />
+				</p:column>
+				
+				<p:column headerText="Data Entrada " sortBy="#{estadia.dataEntrada}" style="text-align: center" priority="3" >
+					<h:outputText value="#{estadia.dataEntrada}">
+					<f:convertDateTime locale="pt_BR" pattern="dd/MM/yyyy HH:mm" timeZone="America/Sao_Paulo"/>
+					</h:outputText>
+				</p:column>
+				
+				<p:column headerText="Data Saida "  sortBy="#{estadia.dataSaida}" style="text-align: center" priority="3">
+					<h:outputText value="#{estadia.dataSaida}">
+					<f:convertDateTime locale="pt_BR" pattern="dd/MM/yyyy HH:mm" timeZone="America/Sao_Paulo"/>
+					</h:outputText>
+				</p:column>
+				
+				<p:column headerText="Local" style="text-align: center" priority="4">
+					<h:outputText value="#{estadia.local.descricao}" />
+				</p:column>
+				
+				<p:column headerText="Valor Cobrado (R$)" style="text-align: center" priority="3"  sortBy="#{estadia.valorCobrado}">
+					<h:outputText value="#{estadia.valorCobrado}" />
+				</p:column>
+				 
+				 <p:column headerText="Desconto (R$)" style="text-align: center" priority="6">
+					<h:outputText value="#{estadia.desconto}" />
+				</p:column>
+				 
+				  <p:column headerText="Racao (R$)" style="text-align: center" priority="5">
+					<h:outputText value="#{estadia.gastoRacao}" />
+				</p:column>
+				 
+				  <p:column headerText="Vacina (R$)" style="text-align: center" priority="5">
+					<h:outputText value="#{estadia.gastoVacina}" />
+				</p:column>
+				
+				 <p:column headerText="Outros (R$)" style="text-align: center" priority="6">
+					<h:outputText value="#{estadia.gastoOutros}" />
+				</p:column>
+				 
+				 <p:column headerText="Usuário" style="text-align: center" priority="6" >
+					<h:outputText value="#{estadia.usuario.nome}" />
+				</p:column>
+				
+				<p:column headerText="Status"  sortBy="#{estadia.status}" >
+					<p:selectBooleanButton value="#{estadia.status}" onLabel="Aberto" offLabel="Fechado"  onIcon="ui-icon-check" offIcon="ui-icon-close" disabled="true" />
+				</p:column>
+				
+				<p:column headerText="Opções"  toggleable="false" exportable="false">
+
+			      <p:commandButton icon="ui-icon-trash"
+						actionListener="#{estadiaListaBeanLazy.excluir}"
+						update=":mensagem :formListagem:tabela" title="Excluir Cadastro">
+						
+						<p:confirm header="Confirmação"
+							message="Deseja excluir a estadia selecionada ?"
+							icon="ui-icon-alert" />
+						<f:attribute name="estadiaSelecionada" value="#{estadia}" />
+						
+					</p:commandButton>
+	
+				<p:commandButton icon="ui-icon-pencil"
+						actionListener="#{estadiaListaBeanLazy.editar}"
+						update=":mensagem :formCadastro"
+						oncomplete="PF('caixaDialog').show();" title="Editar Estadia" disabled="#{estadia.status eq true}">
+						<f:attribute name="estadiaSelecionada" value="#{estadia}" />
+						<!-- Uso do omnifaces para resetar campos depois de requisições de validação -->
+						<f:actionListener
+							type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+					</p:commandButton>
+					
+				<p:commandButton  icon="ui-icon-print" actionListener="#{estadiaListaBeanLazy.imprimir2}"  title="Baixar Comprovante" ajax="false" disabled="#{estadia.status eq true}">
+						<f:attribute name="estadiaSelecionada" value="#{estadia}" />	
+				</p:commandButton>	
+				</p:column>
+				
+    
+
+
+			</p:dataTable>
+        <p:confirmDialog global="true" >
+			<p:commandButton value="Sim" type="button"
+					styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+				<p:commandButton value="Não" type="button"
+					styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+			</p:confirmDialog>
+		
+		</p:panel>
+	</h:form>
+ <p:dialog  widgetVar="caixaDialog" header="Estadia" resizable="false" modal="true" closable="true" responsive="true">
+        <h:form id="formCadastro">
+       
+       
+        <p:tabView id="cad1" cache="false">  
+       <p:tab title="Dados da Estadia"> 
+        
+        <p:panelGrid  columns="2" layout="grid" styleClass="ui-panelgrid-blank" columnClasses="ui-grid-col-4,ui-grid-col-8">
+        
+        
+           <p:outputLabel value="Status:"/>
+        <p:selectOneButton id="tipo" value="#{estadiaListaBeanLazy.estadia.status}"
+				                required="true"  requiredMessage="O campo 'Status' é obrigatório" >
+				      <f:selectItem  itemValue="true" itemLabel="Aberto" />
+				     <f:selectItem  itemValue="false" itemLabel="Fechado" /> 
+				</p:selectOneButton>	
+        
+         <p:outputLabel for="animal" value="Animal:" />
+				<p:selectOneMenu id="animal" filter="true"
+				converter="omnifaces.SelectItemsConverter"
+				 value="#{estadiaListaBeanLazy.estadia.animal}" required="true"
+				 requiredMessage="O campo 'Animal' é obrigatório"  >
+				       <f:selectItem  noSelectionOption="true" itemLabel="Selecione uma animal"/>
+				       <f:selectItems value="#{estadiaListaBeanLazy.animais}" var="animal"
+				       itemValue="#{animal}" itemLabel="#{animal.nome} - Dono: #{animal.cliente.nome}"/>
+				</p:selectOneMenu>
+		
+		 <p:outputLabel for="local" value="Local:" />
+				<p:selectOneMenu id="local" filter="true"
+				converter="omnifaces.SelectItemsConverter"
+				 value="#{estadiaListaBeanLazy.estadia.local}" required="true"
+				 requiredMessage="O campo 'Local' é obrigatório" >
+				       <f:selectItem  noSelectionOption="true" itemLabel="Selecione um local"/>
+				       <f:selectItems value="#{estadiaListaBeanLazy.locais}" var="local"
+				       itemValue="#{local}" itemLabel="#{local.descricao} - #{local.cidade}/#{local.estado}"/>
+				</p:selectOneMenu>
+				
+        <p:outputLabel for="usuario" value="Usuário:" />
+				<p:selectOneMenu id="usuario" 
+					value="#{estadiaListaBeanLazy.estadia.usuario}"
+					converter="omnifaces.SelectItemsConverter"  >
+					<f:selectItem itemValue="#{autenticacaoBean.usuarioLogado}"
+						itemLabel="#{autenticacaoBean.usuarioLogado.nome}" />
+					
+				</p:selectOneMenu>
+        
+                 </p:panelGrid>
+		   </p:tab>  
+		   
+        <p:tab title="Datas e valores"> 
+        <p:panelGrid  columns="2" layout="grid" styleClass="ui-panelgrid-blank" columnClasses="ui-grid-col-4,ui-grid-col-8">
+        
+        <p:outputLabel value="Data de Entrada:"/>
+        <p:calendar value="#{estadiaListaBeanLazy.estadia.dataEntrada}" pattern="dd/MM/yyyy HH:mm:ss" locale="pt" />
+        
+        <p:outputLabel value="Data de Saida:"/>
+        <p:calendar value="#{estadiaListaBeanLazy.estadia.dataSaida}" pattern="dd/MM/yyyy HH:mm:ss" locale="pt" />
+ 
+         <p:outputLabel for="valor" value="Valor Cobrado:"/>
+        <p:inputNumber id="valor" value="#{estadiaListaBeanLazy.estadia.valorCobrado}"  required="true"  requiredMessage="O campo 'Valor Cobrado' é obrigatório" />
+        
+         <p:outputLabel for="desconto" value="Desconto:"/>
+        <p:inputNumber id="desconto" value="#{estadiaListaBeanLazy.estadia.desconto}"  required="true"  requiredMessage="O campo 'Desconto' é obrigatório" />
+        
+               </p:panelGrid>
+		   </p:tab>  
+		   
+       <p:tab title="Custos"> 
+        <p:panelGrid  columns="2" layout="grid" styleClass="ui-panelgrid-blank" columnClasses="ui-grid-col-4,ui-grid-col-8">
+		 
+		  <p:outputLabel for="racao" value="Ração:"/>
+        <p:inputNumber id="racao" value="#{estadiaListaBeanLazy.estadia.gastoRacao}"  required="true"  requiredMessage="O campo 'Ração' é obrigatório" />
+		 
+		  <p:outputLabel for="vacina" value="Vacina:"/>
+        <p:inputNumber id="vacina" value="#{estadiaListaBeanLazy.estadia.gastoVacina}"  required="true"  requiredMessage="O campo 'Vacina' é obrigatório"  />
+		 
+		  <p:outputLabel for="outros" value="Outros:"/>
+        <p:inputNumber id="outros" value="#{estadiaListaBeanLazy.estadia.gastoOutros}"  required="true"  requiredMessage="O campo 'Outros' é obrigatório"  />
+		 
+		   <p:outputLabel  value="Descrição:"/>
+        <p:inputText value="#{estadiaListaBeanLazy.estadia.descricao}" maxlength="100" size="30" />
+				
+		</p:panelGrid>
+		   </p:tab> 
+		   
+		  		  
+        <p:tab title="Total"> 
+        <p:panelGrid  columns="2" layout="grid" styleClass="ui-panelgrid-blank" columnClasses="ui-grid-col-4,ui-grid-col-8">
+		 
+		<p:outputLabel  value="Total:"/>
+        <h:outputText  value="#{estadiaListaBeanLazy.estadia.total}">
+					<f:convertNumber locale="pt_BR" minFractionDigits="2" />
+				</h:outputText>
+				
+		</p:panelGrid>
+		   </p:tab>  		  
+		   					 
+		   				
+	
+   </p:tabView> 
+        <p:separator/>
+        <p:commandButton value="Salvar" actionListener="#{estadiaListaBeanLazy.salvar2}" update=":mensagem  :formCadastro :formListagem:tabela"  icon=" ui-icon-disk" oncomplete="PF('caixaDialog').hide();">
+        </p:commandButton>
+        <p:commandButton value="Fechar" oncomplete="PF('caixaDialog').hide();" icon="ui-icon-closethick"/>
+      
+        
+
+    </h:form>         
+        </p:dialog>
+	
+</ui:define>
+</ui:composition>

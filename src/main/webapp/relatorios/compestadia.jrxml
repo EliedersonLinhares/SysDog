@@ -1,0 +1,481 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.6.0.final using JasperReports Library version 6.6.0  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="compestadia" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isFloatColumnFooter="true" uuid="abd03a66-4e6c-4782-8dc6-17d561e61e92">
+	<property name="com.jaspersoft.studio.data.sql.tables">
+		<![CDATA[c3lzZG9nLnVzdWFyaW8gLDE4MSwzOTMsMTMzY2E3YWQtN2E1Ni00OWE0LWFkNzYtNzdjYmNhYzE3
+MGMzO3N5c2RvZy5lc3RhZGlhICwxNSwzMTQsODJiZDFiYjAtYzlkMi00YTcyLWI3NDAtYjBjMTJi
+YjhkMDBjO3N5c2RvZy5sb2NhbCAsMTgxLDY2NixkNTU5MDA5Yy1lNzAyLTRjZTItYTM3MS1mZTgy
+MDZhN2RkY2M7c3lzZG9nLmNsaWVudGUgLDM2MSwxNjUsNGVkOTYwNjgtNzc0YS00MjQ1LTgwYmYt
+OTE1NWE0YmI5Mzc4O3N5c2RvZy5hbmltYWwgLDE4MSwxNSwwYzkxOWMyZS00ODg1LTQ5ZTYtOTlh
+Zi1kZjNmZTI1M2Y0NmE7]]>
+	</property>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="SysDog Data Adapter "/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="130"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="865"/>
+	<property name="net.sf.jasperreports.default.timezone" value="America/Sao_Paulo"/>
+	<parameter name="CODIGO_ESTADIA" class="java.lang.String"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT sysdog.estadia.`dataEntrada` AS eDataEntrada,
+	sysdog.estadia.`dataSaida` AS eDataSaida,
+	sysdog.estadia.desconto AS eDesconto,
+	sysdog.estadia.descricao AS eDescricao,
+	sysdog.estadia.status AS eStatus,
+	sysdog.estadia.`valorCobrado` AS eValorCobrado,
+	sysdog.estadia.`gastoOutros` AS eGastoOutros,
+	sysdog.estadia.`gastoRacao` AS eGastoRacao,
+	sysdog.estadia.`gastoVacina` AS eGastoVacina,
+	sysdog.local.descricao AS lDescricao,
+	sysdog.local.bairro AS lBairro,
+	sysdog.local.cidade AS lCidade,
+	sysdog.local.estado AS lEstado,
+	sysdog.usuario.nome AS uNome,
+	sysdog.animal.nome AS aNOme,
+	sysdog.cliente.nome AS cNome,
+	sysdog.estadia.total AS eTotal
+FROM sysdog.estadia
+	INNER JOIN sysdog.animal ON 
+	 sysdog.estadia.animal_codigo = sysdog.animal.codigo 
+	INNER JOIN sysdog.local ON 
+	 sysdog.estadia.local_codigo = sysdog.local.codigo 
+	INNER JOIN sysdog.usuario ON 
+	 sysdog.estadia.usuario_codigo = sysdog.usuario.codigo 
+	INNER JOIN sysdog.cliente ON 
+	 sysdog.animal.cliente_codigo = sysdog.cliente.codigo 
+WHERE 
+	 sysdog.estadia.codigo = $P{CODIGO_ESTADIA}]]>
+	</queryString>
+	<field name="eDataEntrada" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.label" value="eDataEntrada"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="estadia"/>
+	</field>
+	<field name="eDataSaida" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.label" value="eDataSaida"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="estadia"/>
+	</field>
+	<field name="eDesconto" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="eDesconto"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="estadia"/>
+	</field>
+	<field name="eDescricao" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="eDescricao"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="estadia"/>
+	</field>
+	<field name="eStatus" class="java.lang.Boolean">
+		<property name="com.jaspersoft.studio.field.label" value="eStatus"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="estadia"/>
+	</field>
+	<field name="eValorCobrado" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="eValorCobrado"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="estadia"/>
+	</field>
+	<field name="eGastoOutros" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="eGastoOutros"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="estadia"/>
+	</field>
+	<field name="eGastoRacao" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="eGastoRacao"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="estadia"/>
+	</field>
+	<field name="eGastoVacina" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="eGastoVacina"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="estadia"/>
+	</field>
+	<field name="lDescricao" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="lDescricao"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="local"/>
+	</field>
+	<field name="lBairro" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="lBairro"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="local"/>
+	</field>
+	<field name="lCidade" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="lCidade"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="local"/>
+	</field>
+	<field name="lEstado" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="lEstado"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="local"/>
+	</field>
+	<field name="uNome" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="uNome"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="usuario"/>
+	</field>
+	<field name="aNOme" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="aNOme"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="animal"/>
+	</field>
+	<field name="cNome" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="cNome"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="cliente"/>
+	</field>
+	<field name="eTotal" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="eTotal"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="estadia"/>
+	</field>
+	<variable name="eValorCobrado1" class="java.math.BigDecimal" resetType="Column" calculation="Sum">
+		<variableExpression><![CDATA[$F{eValorCobrado}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="160" splitType="Stretch">
+			<staticText>
+				<reportElement x="350" y="79" width="179" height="17" uuid="e1d4c511-b867-48c3-9ba1-f2606a880c20"/>
+				<textElement>
+					<font isBold="false"/>
+				</textElement>
+				<text><![CDATA[Contatos: ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="350" y="62" width="179" height="17" uuid="bd2be77c-34df-4bd7-9141-d9c17b87caff"/>
+				<textElement>
+					<font isBold="false"/>
+				</textElement>
+				<text><![CDATA[Site:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="350" y="45" width="179" height="17" uuid="639e7acd-a0b2-4c87-abdc-b647cee045e3"/>
+				<textElement>
+					<font isBold="false"/>
+				</textElement>
+				<text><![CDATA[Email: ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="350" y="28" width="179" height="17" uuid="ca63cd86-f331-40ac-9057-353e5ea9e541"/>
+				<textElement>
+					<font isBold="false"/>
+				</textElement>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="350" y="10" width="179" height="17" uuid="d1c8b558-023f-4dde-9f59-03331ddf634b"/>
+				<textElement>
+					<font isBold="false"/>
+				</textElement>
+				<text><![CDATA[Endereco: ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="350" y="96" width="179" height="17" uuid="a935a7dd-00ff-41ab-9732-3d6ecf7105c9"/>
+				<textElement>
+					<font isBold="false"/>
+				</textElement>
+				<text><![CDATA[ ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="20" y="120" width="330" height="40" uuid="0adb7b8b-04e3-42b8-b5bf-8df55aca093a"/>
+				<textElement textAlignment="Center">
+					<font size="20" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Comprovante de Hospedagem]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="105" splitType="Stretch">
+			<staticText>
+				<reportElement x="18" y="0" width="220" height="20" uuid="f06c47c4-aae9-4675-9d9e-925f6e5920e6"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Informações do Cliente:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="280" y="0" width="208" height="20" uuid="66293953-0389-4e70-99ae-b618d16bd29a"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Detalhes do Pagamento:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="17" y="21" width="50" height="16" uuid="ab84c0c5-1c23-46b0-b460-b5608e1f597c"/>
+				<textElement>
+					<font isBold="false"/>
+				</textElement>
+				<text><![CDATA[Nome:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="282" y="20" width="30" height="17" uuid="3659252e-813d-49ca-95ed-c5b72cc69661"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Total:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="282" y="37" width="129" height="17" uuid="4ca5e3f8-71ef-409e-ab9c-72c56315c93d"/>
+				<textElement>
+					<font isBold="false"/>
+				</textElement>
+				<text><![CDATA[Nome do Usuario:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="373" y="37" width="156" height="17" uuid="22ea774b-8b9c-48ee-b2b3-d9829594b5aa"/>
+				<textFieldExpression><![CDATA[$F{uNome}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="67" y="20" width="213" height="17" uuid="6d82eeee-0ef4-4431-b1ef-bf8d147a51b4"/>
+				<textFieldExpression><![CDATA[$F{cNome}]]></textFieldExpression>
+			</textField>
+			<textField pattern="R$ #,##0.00;R$ #,##0.00">
+				<reportElement x="312" y="20" width="60" height="17" uuid="3563c413-3338-4f1b-aa48-53ba3081a793"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{eTotal}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="20" splitType="Stretch">
+			<staticText>
+				<reportElement x="20" y="0" width="135" height="20" uuid="ab2f32dc-2053-4ce8-9ce7-391ef355d153">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="e797a46a-ddbf-401c-894e-88cb32ed879f"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Nome do Animal]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="156" y="0" width="144" height="20" uuid="89b70249-54ae-4e79-b4ba-a6f63f992bed">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="967ebe49-fdb9-4c2d-a301-c2b23858b49c"/>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Data de Entrada]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="300" y="0" width="140" height="20" uuid="7c8acf28-2e0b-4fb6-b17d-c63228a5c615">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="06d22b8b-73ce-41a4-a10a-cac677cba308"/>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Data de Saída]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="440" y="0" width="87" height="20" uuid="8e239089-7254-4a71-af57-1800135e2d5f">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="303b886e-ac71-4123-929d-8f4065a21150"/>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Valor Cobrado]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="33" splitType="Stretch">
+			<textField>
+				<reportElement x="20" y="3" width="136" height="30" uuid="800027d2-49aa-43d0-ac14-9b884861874c">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="e797a46a-ddbf-401c-894e-88cb32ed879f"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{aNOme}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/M/yy HH:mm ">
+				<reportElement x="155" y="3" width="145" height="30" uuid="51823a6b-66ce-4b6c-947a-6381cd1fc566">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="967ebe49-fdb9-4c2d-a301-c2b23858b49c"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{eDataEntrada}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/M/yy HH:mm ">
+				<reportElement x="300" y="3" width="140" height="30" uuid="a1d55201-759d-432c-9066-19111e949944">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="06d22b8b-73ce-41a4-a10a-cac677cba308"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{eDataSaida}]]></textFieldExpression>
+			</textField>
+			<textField pattern="R$ #,##0.00;R$ #,##0.00">
+				<reportElement x="440" y="3" width="87" height="30" uuid="367ff9b8-bd09-4fae-8e9f-bccc05907b15">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="303b886e-ac71-4123-929d-8f4065a21150"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{eValorCobrado}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="200" splitType="Stretch">
+			<staticText>
+				<reportElement x="22" y="183" width="352" height="17" uuid="f131d843-7a94-4c8f-916b-f88f64cb6792"/>
+				<textElement>
+					<font isBold="false"/>
+				</textElement>
+				<text><![CDATA[Este é apenas um comprovante de compra gerado eletronicamente]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="22" y="163" width="70" height="17" uuid="e2cef8c9-0da6-4289-b44f-e1394bb53fc4"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Importante:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="20" y="87" width="210" height="20" uuid="3bf1fd7c-f705-451e-af70-9b3bc4d947c2"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Informações do Local:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="21" y="107" width="50" height="16" uuid="699d775d-1026-41d3-ad29-ae9b5da94a4b"/>
+				<textElement>
+					<font isBold="false"/>
+				</textElement>
+				<text><![CDATA[Nome:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="71" y="107" width="100" height="16" uuid="22dbbfa0-c058-4a33-84e5-3eb7f94305c9"/>
+				<textFieldExpression><![CDATA[$F{lDescricao}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="21" y="124" width="50" height="16" uuid="99b54623-c6e5-49e2-baee-935c1666eef9"/>
+				<textElement>
+					<font isBold="false"/>
+				</textElement>
+				<text><![CDATA[Bairro:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="71" y="123" width="100" height="17" uuid="612ba363-bc83-4938-8cb6-9b6fa1605e52"/>
+				<textFieldExpression><![CDATA[$F{lBairro}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="21" y="140" width="50" height="16" uuid="dd522ebe-ebec-4543-9717-0afdfbe1a8d2"/>
+				<textElement>
+					<font isBold="false"/>
+				</textElement>
+				<text><![CDATA[Cidade:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="71" y="140" width="70" height="16" uuid="60bc6987-c1d7-4fdc-af67-dad4b8bc30cd"/>
+				<textFieldExpression><![CDATA[$F{lCidade}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="141" y="140" width="50" height="16" uuid="ace32dbb-64b6-4435-8769-7a3aec222249"/>
+				<textFieldExpression><![CDATA[$F{lEstado}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="355" y="31" width="71" height="20" uuid="d382cd5f-e318-4e22-ba0d-c138edbb42ce"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Ração (R$):]]></text>
+			</staticText>
+			<textField pattern="#,##0.00;#,##0.00">
+				<reportElement x="427" y="31" width="100" height="20" uuid="0bf8b181-ba61-4b77-917e-a7c0c09255dc"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{eGastoRacao}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="355" y="51" width="71" height="20" uuid="e7ece66d-e979-42f0-ae02-c6732e6109c1"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Vacina (R$):]]></text>
+			</staticText>
+			<textField pattern="#,##0.00;#,##0.00">
+				<reportElement x="427" y="51" width="100" height="20" uuid="daaf27da-ffa2-4642-9dca-07892c977514"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{eGastoVacina}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="355" y="71" width="71" height="20" uuid="c47c8b86-0910-4048-8102-a6b465a1a4c5"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Outros (R$):]]></text>
+			</staticText>
+			<textField pattern="#,##0.00;#,##0.00">
+				<reportElement x="427" y="71" width="100" height="20" uuid="9e96d9ef-2288-4425-b76e-50a186733581"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{eGastoOutros}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="20" y="0" width="508" height="5" uuid="eb36eacd-94be-4a0f-8c79-327c77a49eb4"/>
+			</line>
+			<staticText>
+				<reportElement x="20" y="20" width="70" height="20" uuid="ed6d0ba8-3c1e-4101-adf2-807172114ed0"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Descrição Outros :]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="92" y="20" width="218" height="20" uuid="1caab26f-0fc5-45eb-befc-c6786da3cd7f"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{eDescricao}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="20" y="47" width="310" height="13" uuid="22fcc37c-4940-4932-86da-8a9158ec0c6f"/>
+				<text><![CDATA[________________________________________________________________]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="20" y="65" width="310" height="13" uuid="19ffe335-447b-4fb3-9e26-33948ca223e5"/>
+				<text><![CDATA[________________________________________________________________]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="338" y="91" width="88" height="20" uuid="8826fc68-f8b4-4531-be91-8af274205bb3"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[TOTAL (R$):]]></text>
+			</staticText>
+			<textField pattern="#,##0.00;#,##0.00">
+				<reportElement x="427" y="91" width="100" height="20" uuid="8e1120a5-af07-4ff5-89fc-86968e658295"/>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{eTotal}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="336" y="11" width="90" height="20" uuid="1959546e-dd46-413c-8a4e-85b7122629a7"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Desconto (R$):]]></text>
+			</staticText>
+			<textField pattern="#,##0.00;#,##0.00">
+				<reportElement x="427" y="10" width="100" height="21" uuid="b7dfd446-f932-47cb-9f5e-6f0a4c0d509b"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{eDesconto}]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band height="19" splitType="Stretch">
+			<textField pattern="dd MMMMM , yyyy">
+				<reportElement x="250" y="1" width="100" height="18" uuid="a1ea455c-9d18-426a-af57-21f4ad1f4f89"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="430" y="1" width="96" height="16" uuid="807175eb-38cb-4ad3-a6e2-9520b62d629c"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField pattern="HH:mm">
+				<reportElement x="350" y="1" width="80" height="18" uuid="c2fb19b9-8262-4ce7-9b0b-d8321b99b68a"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="20" y="0" width="90" height="17" uuid="b591d9c7-23dc-46c7-87c6-f8139e9bc863"/>
+				<textElement>
+					<font isBold="false"/>
+				</textElement>
+				<text><![CDATA[SysDog 0.1]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="150" y="0" width="100" height="19" uuid="c5b8c254-3017-48af-b5d0-5967455729a0"/>
+				<text><![CDATA[Data de Impressão:]]></text>
+			</staticText>
+		</band>
+	</pageFooter>
+</jasperReport>

@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html >
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+	
+	<ui:insert name="metadata"></ui:insert>
+    <h:head>
+        
+        <title>SysDog</title>
+        
+      <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+         <meta name="viewport" content="width=device-width, initial-scale=1" />
+         <!-- CSS -->
+         <h:outputStylesheet name="bootstrap/css/bootstrap.css" />
+         <h:outputStylesheet library="css" name="styleBootStrap.css"/>               
+         <h:outputStylesheet name="css/font-awesome.css" />
+         
+    </h:head>       
+    <h:body>
+<p:growl id="mensagem" />
+
+
+        <div class="wrapper">
+        
+   
+            <!-- Sidebar Holder -->
+            <nav id="sidebar">
+            
+                <div class="sidebar-header">
+                
+              
+                    <h3>
+                   <h:graphicImage value="/resources/images/avatar/#{autenticacaoBean.usuarioLogado.avatar.name}.png" class="img-circle" width="70" height="70"/>
+                    
+                    </h3>
+                   <div id="txtheader"> 
+                     <h:outputText value="#{autenticacaoBean.usuarioLogado.nome}" style="font-size: 17px;font-weight:bold;"/><br></br>
+                   <h:outputText value="#{autenticacaoBean.usuarioLogado.tipoFormatado}" style="font-size: 13px;"/><br></br>
+                   
+                   
+        <div class="center info">
+          <!-- Status -->
+          <h:graphicImage value="/resources/images/online.png"  width="8" height="8"/> Online
+        </div>
+                  </div>
+                    <strong>SD</strong>
+                </div>
+               <div class="sidebar-menu">
+                <ul class="list-unstyled components">
+                    
+                        <li>
+                        <a href="#pageSubmenu3" data-toggle="collapse" aria-expanded="false">
+                       <i class="glyphicon glyphicon-plus-sign"></i>
+                        Cadastros
+                        </a>
+                         <ul class="collapse list-unstyled" id="pageSubmenu3">
+                         
+                            <li><a href="/SysDog/pages/admusuarios.xhtml"><h:graphicImage value="/resources/images/ajuda/usuario.png"  width="24" height="24"/>Usuários</a></li>
+							<li><a href="/SysDog/pages/clientes.xhtml"><h:graphicImage value="/resources/images/ajuda/cliente.png"  width="24" height="24"/>Clientes</a></li>
+							<li><a href="/SysDog/pages/animais.xhtml"><h:graphicImage value="/resources/images/ajuda/dog.png"  width="24" height="24"/>Animais</a></li>
+							<li><a href="/SysDog/pages/locais.xhtml"><h:graphicImage value="/resources/images/ajuda/local.png"  width="24" height="24"/>Locais</a></li>
+							<li><a href="/SysDog/pages/fornecedores.xhtml"><h:graphicImage value="/resources/images/ajuda/fabricante.png"  width="24" height="24"/>Fabricante</a></li>
+							<li><a href="/SysDog/pages/produtos.xhtml"><h:graphicImage value="/resources/images/ajuda/produto.png"  width="24" height="24"/>Produtos</a></li>
+							
+							
+						</ul>
+                    </li>
+                    
+                    
+                    
+                    <li>
+                        <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false">
+                      <i class="glyphicon glyphicon-calendar"></i>
+                         Operações
+                        </a>
+						<ul class="collapse list-unstyled" id="pageSubmenu">
+							<li><a href="/SysDog/pages/estadias.xhtml"><h:graphicImage value="/resources/images/ajuda/estadia.png"  width="24" height="24"/>Estadias</a></li>
+							<li><a href="/SysDog/pages/vendas.xhtml"><h:graphicImage value="/resources/images/ajuda/venda.png"  width="24" height="24"/>Vendas</a></li>
+							<li><a href="/SysDog/pages/compras.xhtml"><h:graphicImage value="/resources/images/ajuda/compra.png"  width="24" height="24"/>Compras</a></li>
+						</ul>
+					</li>
+                    <li>
+                        <a href="#pageSubmenu2" data-toggle="collapse" aria-expanded="false">
+                        <i class="glyphicon glyphicon-folder-open"></i>
+                         Historico
+                        </a>
+                        <ul class="collapse list-unstyled" id="pageSubmenu2">
+                           <li><a href="/SysDog/pages/admlistaEstadias.xhtml"><h:graphicImage value="/resources/images/ajuda/hestadia.png"  width="24" height="24"/>Estadias</a></li>
+                            <li><a href="/SysDog/pages/admlistaVendas.xhtml"><h:graphicImage value="/resources/images/ajuda/hvenda.png"  width="24" height="24"/>Vendas</a></li>
+                             <li><a href="/SysDog/pages/admlistaCompras.xhtml"><h:graphicImage value="/resources/images/ajuda/hcompra.png"  width="24" height="24"/>Compras</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                       
+                       <a href="#pageSubmenu4" data-toggle="collapse" aria-expanded="false">
+                         <i class="glyphicon  glyphicon-inbox"></i>
+                         Financeiro
+                        </a>
+                        <ul class="collapse list-unstyled" id="pageSubmenu4">
+                           <li><a href="/SysDog/pages/despesas.xhtml"><h:graphicImage value="/resources/images/ajuda/despesa.png"  width="24" height="24"/>Despesas</a></li>
+                        </ul>
+                       
+                    </li>
+                    <!--   <li>
+                        <a href="/SysDog/pages/ajuda.xhtml">
+                         <i class="glyphicon glyphicon-question-sign"></i>
+                            Ajuda
+                        </a>
+                    </li> --> 
+                </ul> 
+</div>
+              
+            </nav> 
+
+            <!-- Page Content Holder -->
+            <div id="content">
+
+                <nav class="navbar fixed-top" style="">
+                    <div class="container-fluid">
+
+                        <div class="navbar-header">
+                            <button type="button" id="sidebarCollapse" class="navbar-btn btn " >
+                                <i class="glyphicon glyphicon-align-left"></i> 
+                            </button>
+                            <h:form>
+                           <p:commandButton value="Logout" actionListener="#{autenticacaoBean.deslogar}" icon="ui-icon-power"  /> 
+                           <p:idleMonitor timeout="1800000">
+                                 <p:ajax event="idle" listener="#{autenticacaoBean.onIdle}" update="mensagem" />
+                           </p:idleMonitor>
+                           
+                           
+                           </h:form>
+                        </div>
+                       <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                            <ul class="nav navbar-nav navbar-right"> 
+                          
+                            </ul>
+                        </div>
+                    </div>
+                </nav>
+
+                
+                 <ui:insert name="conteudo"/>
+            </div>
+        </div>
+
+         <!-- Bootstrap Js CDN -->
+         <h:outputScript name="bootstrap/js/bootstrap.js" />
+         <script type="text/javascript">
+             $(document).ready(function () {
+                 $('#sidebarCollapse').on('click', function () {
+                     $('#sidebar').toggleClass('active');
+                 });
+             });
+         </script>
+    </h:body>
+</html>

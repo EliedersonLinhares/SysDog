@@ -1,0 +1,340 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	template="/templates/modelo5.xhtml">
+
+
+<ui:define name="conteudo">
+ <h:outputStylesheet library="css" name="styleBootStrap.css"/>  
+	<h:form id="formListagem">
+		<p:panel header="Lista de Animais Cadastrados">
+
+				<p:toolbar style="margin:5px 10px">
+					<f:facet name="left">
+						<p:commandButton value="Novo" icon="ui-icon-document"
+							actionListener="#{animalBeanLazy.novo}"
+							update=":mensagem :formCadastro"
+							oncomplete="PF('dialogo').show();" title="Cadastrar novo Cliente">
+							<!-- Uso do omnifaces para resetar campos depois de requisições de validação -->
+							<f:actionListener
+								type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+						</p:commandButton>
+						<span class="ui-separator"> <span
+							class="ui-icon ui-icon-grip-dotted-vertical" />
+						</span>
+					</f:facet>
+
+
+					<f:facet name="right">
+					<h:commandLink>
+                          <p:graphicImage value="/resources/images/excel2.png" height="34" width="34" title="Exportar para Excel"/>
+                           <p:dataExporter type="xls" target="tabela" fileName="animais" />
+                      </h:commandLink>
+					</f:facet>
+				</p:toolbar>
+				
+				<p:dataTable id="tabela" emptyMessage="Nenhum registro encontrado." lazy="true"
+				paginator="true" value="#{animalBeanLazy.dataModel}" var="animal" rows="5" paginatorPosition="bottom" paginatorTemplate= "{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+                 rowsPerPageTemplate="5,10" >
+				
+				<p:column headerText="Nome" filterBy="#{animal.nome}" sortBy="#{animal.nome}" style="text-align: center">
+					<h:outputText value="#{animal.nome}" />
+				</p:column>
+				
+				<p:column headerText="Tipo" sortBy="#{animal.tipo}" style="text-align: center"  priority="4">
+					<h:outputText value="#{animal.tipo}" />
+				</p:column>
+
+				<p:column headerText="Raça" filterBy="#{animal.raca}"  style="text-align: center" priority="3">
+					<h:outputText value="#{animal.raca}" />
+				</p:column>
+				
+				<p:column headerText="Idade" sortBy="#{animal.idade}" style="text-align: center"  priority="4">
+						<h:outputText value="#{animal.idade}" />	
+				</p:column>
+				
+				<p:column headerText="Sexo" sortBy="#{animal.sexo}" style="text-align: center"  priority="6">
+						<h:outputText value="#{animal.sexo}" />	
+				</p:column>
+				
+				<p:column headerText="Agressividade"  sortBy="#{animal.agressividade}" style="text-align: center" priority="6">
+					<h:outputText value="#{animal.agressividade}" />
+				</p:column>
+				
+				<p:column headerText="Tamanho" sortBy="#{animal.tamanho}" style="text-align: center" priority="6">
+						<h:outputText value="#{animal.tamanho}" />	
+				</p:column>
+				
+				<p:column headerText="Hospedado"  sortBy="#{animal.alocado}" style="text-align: center" priority="5">
+					<p:selectBooleanButton value="#{animal.alocado}" onLabel="Sim" offLabel="Não"  onIcon="ui-icon-check" offIcon="ui-icon-close" disabled="true" />
+				</p:column>
+				
+				<p:column headerText="Cliente" style="text-align: center" priority="2">
+					<h:outputText value="#{animal.cliente.nome}" />
+				</p:column>
+        
+                 <p:column headerText="Avatar" style="text-align: center"  exportable="false" priority="1">
+				 <p:graphicImage cache="false" value="/resources/images/avatardog/#{animal.avatardog.name}.png" width="60"
+								height="60" />
+				</p:column>
+
+
+				<p:column headerText="Opções" style="text-align: center" toggleable="false" exportable="false">
+					<p:commandButton icon="ui-icon-pencil"
+						actionListener="#{animalBeanLazy.editar}"
+						update=":mensagem :formCadastro"
+						oncomplete="PF('dialogo').show();"  title="Editar Cadastro">
+						<f:attribute name="animalSelecionado" value="#{animal}" />
+						<!-- Uso do omnifaces para resetar campos depois de requisições de validação -->
+						<f:actionListener
+							type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+					</p:commandButton>
+             
+				</p:column>
+
+			</p:dataTable>
+
+		</p:panel>
+	</h:form>
+
+	<p:dialog header="Animal - Cadastro" widgetVar="dialogo"
+		draggable="false" resizable="false" modal="true" closable="true" responsive="true">
+		
+		<h:form id="formCadastro">
+		
+		<p:tabView id="cad1" cache="false">  
+          <p:tab title="Dados Animal"> 
+			
+			<p:panelGrid  columns="2" layout="grid" styleClass="ui-panelgrid-blank" columnClasses="ui-grid-col-4,ui-grid-col-8">
+			
+		       <p:outputLabel for="cliente" value="Cliente:" />
+		          <p:selectOneMenu id="cliente" filter="true"
+				converter="omnifaces.SelectItemsConverter"
+				 value="#{animalBeanLazy.animal.cliente}" required="true"
+				 requiredMessage="O campo 'Cliente' é obrigatório">
+				       <f:selectItem  noSelectionOption="true" itemLabel="Selecione uma cliente"/>
+				       <f:selectItems value="#{animalBeanLazy.clientes}" var="cliente"
+				       itemValue="#{cliente}" itemLabel="#{cliente.nome} - #{cliente.cpf}"/>
+				</p:selectOneMenu>
+			
+			<p:outputLabel for="tipo" value="Tipo:" />
+               <p:autoComplete   id="tipo" maxlength="12" size="15" maxResults="5"
+					value="#{animalBeanLazy.animal.tipo}" required="true"
+					requiredMessage="O campo 'Tipo' é obrigatório" 
+					completeMethod="#{animalBeanLazy.pesquisarTipo}"/>	
+			
+				<p:outputLabel for="nome" value="Nome:" />
+				<p:inputText id="nome" maxlength="50" size="30"
+					value="#{animalBeanLazy.animal.nome}" required="true"
+					requiredMessage="O campo 'Nome' é obrigatório" />
+					
+		       <p:outputLabel for="raca" value="Raça:" />
+		        <p:autoComplete   id="raca" maxlength="50" size="30" maxResults="5"
+					value="#{animalBeanLazy.animal.raca}" required="true"
+					requiredMessage="O campo 'Raça' é obrigatório" 
+					completeMethod="#{animalBeanLazy.pesquisarRaca}"/>
+				
+		</p:panelGrid>
+		  </p:tab>
+		  
+		   	<p:tab title="Caracteristicas"> 
+			<p:panelGrid  columns="2" layout="grid" styleClass="ui-panelgrid-blank" columnClasses="ui-grid-col-4,ui-grid-col-8">	
+			
+			  <p:outputLabel for="sexo" value="Sexo:" />
+				<p:selectOneButton id="sexo" value="#{animalBeanLazy.animal.sexo}"
+				                required="true"  requiredMessage="O campo 'Sexo' é obrigatório" >
+				      <f:selectItem  itemValue="Femêa" itemLabel="Femêa"/>
+				      <f:selectItem  itemValue="Macho" itemLabel="Macho"/>
+				</p:selectOneButton>
+				
+				<p:outputLabel for="idade" value="Idade:" />
+				<p:inputText id="idade" maxlength="2" size="5"
+					value="#{animalBeanLazy.animal.idade}" required="true"
+					requiredMessage="O campo 'Idade' é obrigatório" 
+					converterMessage="Informe um valor válido para o campo 'idade'"
+					validatorMessage="Informe um valor entre 1 e 25 para o campo 'Numero'">
+					<f:validateLongRange minimum="1" maximum="25"/>
+					</p:inputText	>
+				
+				<p:outputLabel for="tamanho" value="Tamanho:" />
+				<p:selectOneMenu id="tamanho" value="#{animalBeanLazy.animal.tamanho}" 
+				required="true" requiredMessage="O campo 'Tamanho' é obrigatório" >
+                      <f:selectItem noSelectionOption="true" itemLabel="Selecione o tamanho" />
+                      <f:selectItem itemLabel="Mini" itemValue="Mini" />
+                      <f:selectItem itemLabel="Pequeno" itemValue="Pequeno" />
+                      <f:selectItem itemLabel="Médio" itemValue="Medio" />
+                      <f:selectItem itemLabel="Grande" itemValue="Grande" />
+                      <f:selectItem itemLabel="Gigante" itemValue="Gigante" />
+                 </p:selectOneMenu>
+					
+					<p:outputLabel for="agressividade" value="Agressividade:" />
+				<p:selectOneMenu id="agressividade" value="#{animalBeanLazy.animal.agressividade}" required="true"
+					requiredMessage="O campo 'Agressividade' é obrigatório" >
+                      <f:selectItem noSelectionOption="true" itemLabel="Selecione a agressividade" />
+                      <f:selectItem itemLabel="Baixo" itemValue="Baixo" />
+                      <f:selectItem itemLabel="Médio" itemValue="Medio" />
+                      <f:selectItem itemLabel="Alto" itemValue="Alto" />
+ 
+                 </p:selectOneMenu>
+	     </p:panelGrid>
+		  </p:tab>
+		  
+		  	<p:tab title="Complemeto"> 
+			<p:panelGrid  columns="2" layout="grid" styleClass="ui-panelgrid-blank" columnClasses="ui-grid-col-4,ui-grid-col-8">
+			
+			<p:outputLabel for="receitahorarios" value="Receita com Horários:" />
+				<p:inputText id="receitahorarios" maxlength="80" size="30"
+					value="#{animalBeanLazy.animal.receitaHorarios}"/>	
+			
+			<p:outputLabel for="rotina" value="Rotina:" />
+				<p:inputText id="rotina" maxlength="100" size="30"
+					value="#{animalBeanLazy.animal.rotina}"/>				
+							
+				<p:outputLabel for="avatardog" value="Avatar:" />
+				<p:selectOneMenu id="avatardog" filter="true"
+				        value="#{animalBeanLazy.animal.avatardog}" required="true"
+				        requiredMessage="O campo 'Avatar' é obrigatório"
+				        converter="omnifaces.SelectItemsConverter" var="p">
+				       <f:selectItem  noSelectionOption="true" itemLabel="Selecione uma Avatar"/>
+				       <f:selectItems value="#{animalBeanLazy.avatardogs}" var="avatardog"
+				            itemValue="#{avatardog}" itemLabel="#{avatardog.name}"/>
+
+						<p:column>
+							<p:graphicImage value="/resources/images/avatardog/#{p.name}.png" width="60"
+								height="60" />
+						</p:column>
+
+						<p:column>
+                           #{p.name}
+                         </p:column>
+					</p:selectOneMenu>	
+		</p:panelGrid>
+		  </p:tab>
+		  
+		 <p:tab title="Emergência"> 
+			<p:panelGrid  columns="2" layout="grid" styleClass="ui-panelgrid-blank" columnClasses="ui-grid-col-4,ui-grid-col-8">			
+							 
+		  <p:outputLabel for="doutorE" value="Doutor(a):" />
+				<p:inputText id="doutorE" maxlength="50" size="30"
+					value="#{animalBeanLazy.animal.doutorE}"  />	
+		  
+		 <p:outputLabel for="telefone" value="Telefone:" />
+				<p:inputMask id="telefone" mask="(99)9999-9999" size="15"   
+				    value="#{animalBeanLazy.animal.telefoneE}"/>	  		
+				
+				<p:outputLabel for="celular" value="Celular:" />
+				<p:inputMask id="celular" mask="(99)99999-9999" size="15"   
+				    value="#{animalBeanLazy.animal.celularE}" />
+		  
+		  </p:panelGrid>
+		  </p:tab>
+		  
+		  
+		<p:tab title="Vacinas"> 
+			<p:panelGrid  columns="2" layout="grid" styleClass="ui-panelgrid-blank" columnClasses="ui-grid-col-4,ui-grid-col-8">  
+		  
+		  <p:outputLabel for="castrado" value="Castrado:" />
+				<p:selectOneButton id="castrado" value="#{animalBeanLazy.animal.castrado}"
+				                required="true"  requiredMessage="O campo 'Castrado' é obrigatório" >
+				      <f:selectItem  itemValue="false" itemLabel="Não"/>
+				      <f:selectItem  itemValue="true" itemLabel="Sim"/>
+				</p:selectOneButton>
+		  
+		   <p:outputLabel for="vacina" value="Vacina em dia:" />
+				<p:selectOneButton id="vacina" value="#{animalBeanLazy.animal.vacinaemdia}"
+				                required="true"  requiredMessage="O campo 'Vacina em dia' é obrigatório" >
+				      <f:selectItem  itemValue="false" itemLabel="Não"/>
+				      <f:selectItem  itemValue="true" itemLabel="Sim"/>
+				</p:selectOneButton>
+				
+	    <p:outputLabel for="vencimentovacina" value="Vencimento da Vacina:"/>
+        <p:calendar id="vencimentovacina" value="#{animalBeanLazy.animal.vencimentoVacina}" pattern="dd/MM/yyyy" locale="pt" timeZone="America/Sao_Paulo" 
+         required="true"  requiredMessage="O campo 'Vencimento da Vacina' é obrigatório"/>		
+		  
+		  
+		  	<p:outputLabel for="carteira" value="Carteira de Vacinação:" />
+				<p:selectOneButton id="carteira" value="#{animalBeanLazy.animal.carteiraVacinacao}"
+				                required="true"  requiredMessage="O campo 'Carteira de Vacinação' é obrigatório" >
+				      <f:selectItem  itemValue="false" itemLabel="Não"/>
+				      <f:selectItem  itemValue="true" itemLabel="Sim"/>
+				</p:selectOneButton>
+		  
+		  
+		</p:panelGrid>
+		  </p:tab>  
+		  
+		  <p:tab title="Vacinas Cont."> 
+			<p:panelGrid  columns="2" layout="grid" styleClass="ui-panelgrid-blank" columnClasses="ui-grid-col-4,ui-grid-col-8">  
+		  
+		  <p:outputLabel for="vermifugo" value="Vermifugos:" />
+				<p:selectOneButton id="vermifugo" value="#{animalBeanLazy.animal.vermifugos}"
+				                required="true"  requiredMessage="O campo 'Vermifugos' é obrigatório" >
+				      <f:selectItem  itemValue="false" itemLabel="Não"/>
+				      <f:selectItem  itemValue="true" itemLabel="Sim"/>
+				</p:selectOneButton>
+		  
+		<p:outputLabel value="Data Vermifugação:"/>
+        <p:calendar value="#{animalBeanLazy.animal.dataVermifugos}" pattern="dd/MM/yyyy" locale="pt" timeZone="America/Sao_Paulo" />		
+		  
+		  <p:outputLabel for="pulgaCarrapato" value="Pulgas e Carrapatos:" />
+				<p:selectOneButton id="pulgaCarrapato" value="#{animalBeanLazy.animal.pulgacarrapatos}"
+				                required="true"  requiredMessage="O campo 'Pulgas e Carrapatos' é obrigatório" >
+				      <f:selectItem  itemValue="false" itemLabel="Não"/>
+				      <f:selectItem  itemValue="true" itemLabel="Sim"/>
+				</p:selectOneButton>
+			
+	    <p:outputLabel value="Data Pulgas e Carrapatos:"/>
+        <p:calendar value="#{animalBeanLazy.animal.dataPulgaCarrapato}" pattern="dd/MM/yyyy" locale="pt" timeZone="America/Sao_Paulo" />			
+		  
+		  
+		  </p:panelGrid>
+		  </p:tab>  
+		  
+		  <p:tab title="Cuidados Médicos."> 
+			<p:panelGrid  columns="2" layout="grid" styleClass="ui-panelgrid-blank" columnClasses="ui-grid-col-4,ui-grid-col-8">  
+		  
+		  
+		   <p:outputLabel for="doencaexistente" value="Doença préexistente:" />
+				<p:selectOneButton id="doencaexistente" value="#{animalBeanLazy.animal.doencaPrevia}"
+				                required="true"  requiredMessage="O campo 'Doença préexistente' é obrigatório" >
+				      <f:selectItem  itemValue="false" itemLabel="Não"/>
+				      <f:selectItem  itemValue="true" itemLabel="Sim"/>
+				</p:selectOneButton>
+		  
+		  <p:outputLabel for="descricaodoenca" value="Descrição da Doença:" />
+				<p:inputText id="descricaodoenca" maxlength="100" size="30"
+					value="#{animalBeanLazy.animal.descricaoDoenca}"/>
+		  
+		  <p:outputLabel for="medicacao" value="Medicação:" />
+				<p:selectOneButton id="medicacao" value="#{animalBeanLazy.animal.medicacao}"
+				                required="true"  requiredMessage="O campo 'Medicação' é obrigatório" >
+				      <f:selectItem  itemValue="false" itemLabel="Não"/>
+				      <f:selectItem  itemValue="true" itemLabel="Sim"/>
+				</p:selectOneButton>
+				
+			 <p:outputLabel for="descricaomedicacao" value="Descrição da Medicacao:" />
+				<p:inputText id="descricaomedicacao" maxlength="100" size="30"
+					value="#{animalBeanLazy.animal.descricaoMedicacao}"/>	
+		  
+		  
+		   </p:panelGrid>
+		  </p:tab>  
+		  
+		  
+		  </p:tabView>
+           <p:separator />
+			<p:panelGrid columns="2" styleClass="ui-noborder ">
+				<p:commandButton value="Salvar"
+					actionListener="#{animalBeanLazy.salvar}"  icon=" ui-icon-disk"
+					update=":mensagem :formCadastro :formListagem:tabela" />
+				<p:commandButton value="Fechar" oncomplete="PF('dialogo').hide();" icon="ui-icon-closethick" />
+			</p:panelGrid>
+
+		</h:form>
+	</p:dialog>
+</ui:define>
+</ui:composition>

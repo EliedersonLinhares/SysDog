@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	template="/templates/modelo5.xhtml">
+
+
+<ui:define name="conteudo">
+
+	<h:form id="formListagem">
+		<p:panel header="Lista de Locais Cadastrados">
+
+				<p:toolbar style="margin:5px 10px">
+					<f:facet name="left">
+						<p:commandButton value="Novo" icon="ui-icon-document"
+							actionListener="#{localBeanLazy.Novo}"
+							update=":mensagem :formCadastro"
+							oncomplete="PF('dialogo').show();" title="Cadastrar nova cidade">
+							<!-- Uso do omnifaces para resetar campos depois de requisições de validação -->
+							<f:actionListener
+								type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+						</p:commandButton>
+						<span class="ui-separator"> <span
+							class="ui-icon ui-icon-grip-dotted-vertical" />
+						</span>
+					</f:facet>
+
+
+					<f:facet name="right">
+						<h:commandLink>
+                          <p:graphicImage value="/resources/images/excel2.png" height="34" width="34" title="Exportar para Excel"/>
+                           <p:dataExporter type="xls" target="tabela" fileName="locais" />
+                      </h:commandLink>
+					</f:facet>
+				</p:toolbar>
+
+
+
+				<p:dataTable id="tabela" emptyMessage="Nenhum registro encontrado." lazy="true"
+				paginator="true" value="#{localBeanLazy.dataModel}" var="local" rows="5" 
+				paginatorPosition="bottom" paginatorTemplate= "{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+                 rowsPerPageTemplate="5,10" > 
+				
+
+				<p:column headerText="Descrição" filterBy="#{local.descricao}" style="text-align: center">
+					<h:outputText value="#{local.descricao}" />
+				</p:column>
+				
+				<p:column headerText="Tipo" filterBy="#{local.tipo}" style="text-align: center" priority="2">
+					<h:outputText value="#{local.tipo}" />
+				</p:column>
+				
+				<p:column headerText="Endereço" style="text-align: center" priority="4">
+					<h:outputText value="#{local.endereco}" />
+				</p:column>
+				
+				<p:column headerText="Bairro" filterBy="#{local.bairro}" style="text-align: center" priority="5">
+					<h:outputText value="#{local.bairro}" />
+				</p:column>
+				
+				<p:column headerText="Cidade" style="text-align: center" priority="5">
+					<h:outputText value="#{local.cidade}" />
+					<h:outputText value=" - " />
+					<h:outputText value=" #{local.estado}" />
+				</p:column>
+				
+				<p:column headerText="CEP" style="text-align: center" priority="6">
+					<h:outputText value="#{local.cep}" />
+				</p:column>
+				
+				<p:column headerText="Telefone" style="text-align: center"  priority="1">
+					<h:outputText value="#{local.telefone}" />
+				</p:column>
+
+				<p:column headerText="Opções"  toggleable="false" style="text-align: center" exportable="false">
+					<p:commandButton icon="ui-icon-pencil"
+						actionListener="#{localBeanLazy.editar}"
+						update=":mensagem :formCadastro"
+						oncomplete="PF('dialogo').show();"  title="Editar Cadastro">
+						<f:attribute name="localSelecionado" value="#{local}" />
+						<!-- Uso do omnifaces para resetar campos depois de requisições de validação -->
+						<f:actionListener
+							type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+					</p:commandButton>
+         
+				</p:column>
+			</p:dataTable>
+
+		</p:panel>
+	</h:form>
+
+	<p:dialog header="Locais - Cadastro" widgetVar="dialogo"
+		draggable="false" resizable="false" modal="true" closable="true" responsive="true">
+		
+		<h:form id="formCadastro">
+			
+	<p:tabView id="cad1" cache="false"> 
+	 
+          <p:tab title="Dados Local"> 
+			<p:panelGrid  columns="2" layout="grid" styleClass="ui-panelgrid-blank" columnClasses="ui-grid-col-4,ui-grid-col-8">
+			
+				<p:outputLabel for="descricao" value="Descrição:" />
+				<p:inputText id="descricao" maxlength="50" size="30"
+					value="#{localBeanLazy.local.descricao}" required="true"
+					requiredMessage="O campo 'Descrição' é obrigatório" />
+					
+			  <p:outputLabel for="tipo" value="Tipo:" />
+			  <p:selectOneMenu id="tipo" value="#{localBeanLazy.local.tipo}" >
+                      <f:selectItem noSelectionOption="true" itemLabel="Selecione o tipo" />
+                      <f:selectItem itemLabel="Sede" itemValue="Sede" />
+                      <f:selectItem itemLabel="Filial" itemValue="Filial" />
+                 </p:selectOneMenu>
+              
+              <p:outputLabel for="telefone" value="Telefone:" />
+				<p:inputMask id="telefone" mask="(99)9999-9999"  size="15" required="true"
+				requiredMessage="O campo 'Telefone' é obrigatório"
+				 value="#{localBeanLazy.local.telefone}"/>   
+                 
+              <p:outputLabel for="endereco" value="Endereço:" />
+				<p:inputText id="endereco" maxlength="150" size="30"
+					value="#{localBeanLazy.local.endereco}" required="true"
+					requiredMessage="O campo 'Endereço' é obrigatório" />
+					  
+		      </p:panelGrid>
+		  </p:tab>		
+						   
+          <p:tab title="Complemento"> 
+			<p:panelGrid  columns="2" layout="grid" styleClass="ui-panelgrid-blank" columnClasses="ui-grid-col-4,ui-grid-col-8">
+			
+			   <p:outputLabel for="bairro" value="Bairro:" />
+				<p:autoComplete   id="bairro" maxlength="30" size="30" maxResults="5"
+					value="#{localBeanLazy.local.bairro}" required="true"
+					requiredMessage="O campo 'Bairro' é obrigatório" 
+					completeMethod="#{localBeanLazy.pesquisarBairro}"/>	
+			
+				<p:outputLabel  for="cidade" value="Cidade:" />
+				<p:autoComplete   id="cidade" maxlength="30" size="30" maxResults="5"
+					value="#{localBeanLazy.local.cidade}" required="true"
+					requiredMessage="O campo 'Bairro' é obrigatório" 
+					completeMethod="#{localBeanLazy.pesquisarCidade}"/>	
+			    
+			    <p:outputLabel  for="estado" value="Estado:" />	
+	              <p:inputText id="estado" maxlength="2" size="4"
+					value="#{localBeanLazy.local.estado}" required="true"
+					requiredMessage="O campo 'Estado' é obrigatório" />	
+
+				<p:outputLabel for="cep" value="CEP:" />
+				<p:inputMask id="cep" mask="99999-999" size="10"   
+				    value="#{localBeanLazy.local.cep}" required="true"
+				   requiredMessage="O campo 'CEP' é obrigatório"/>
+					
+				
+			</p:panelGrid>
+		  </p:tab>	
+			 </p:tabView>
+<p:separator />
+			<p:panelGrid columns="2" styleClass="ui-noborder ">
+				<p:commandButton value="Salvar"
+					actionListener="#{localBeanLazy.Salvar}" icon=" ui-icon-disk"
+					update=":mensagem :formCadastro :formListagem:tabela" />
+				<p:commandButton value="Fechar" oncomplete="PF('dialogo').hide();"  icon="ui-icon-closethick"/>
+			</p:panelGrid>
+
+
+		</h:form>
+	</p:dialog>
+</ui:define>
+</ui:composition>

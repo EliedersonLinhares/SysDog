@@ -1,0 +1,72 @@
+@charset "UTF-8";
+
+.imagemCentralizada{
+	
+	margin-left: auto;
+	margin-right: auto;
+}
+.divTopo{
+	padding-bottom: 10px;
+	background: #807f7e;
+}
+.divCabecalho{
+ 
+}
+.logo{
+	 
+	color:#f0f0f0;
+	font-size: 25px;
+	
+}
+
+.divconteudo{
+	  margin-left: 170px;
+    border-left: 1px solid gray;
+    padding: 1em;
+    overflow: hidden;
+}
+
+footer{
+	
+	padding: 5x 8px;
+	margin-top:20px;
+	margin-bottom: 10px;
+	color:white;	
+}
+body{
+	background:#828282;
+}
+header{
+	padding: 1em;
+    color: white;
+    background-color: black;
+    clear: left;
+}
+nav {
+    float: left;
+    max-width: 160px;
+    margin: 0;
+    padding: 1em;
+}
+.form{
+	 margin-left: 170px;
+    border-left: 4px solid gray;
+    padding: 1em;
+    overflow: hidden;
+}
+.b1{
+	background:#828282;
+}
+
+ .ui-widget, 
+    .ui-widget .ui-widget { 
+    font-size: 13px !important; 
+    font-family: 'Segoe UI', Arial, sans-serif
+    } 
+    
+
+.ui-panel{
+	
+}
+}
+

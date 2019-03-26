@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
+	<persistence-unit name="SysDog">
+	<provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+	<class>com.esl.sysdog.model.Animal</class>
+	<class>com.esl.sysdog.model.Avatar</class>
+	<class>com.esl.sysdog.model.Avatardog</class>
+	<class>com.esl.sysdog.model.Cliente</class>
+	<class>com.esl.sysdog.model.Compra</class>
+
+	<class>com.esl.sysdog.model.Despesa</class>
+	<class>com.esl.sysdog.model.Estadia</class>
+	<class>com.esl.sysdog.model.Fornecedor</class>
+	<class>com.esl.sysdog.model.ItemCompra</class>
+	<class>com.esl.sysdog.model.ItemVenda</class>
+	<class>com.esl.sysdog.model.Local</class>
+	<class>com.esl.sysdog.model.Produto</class>
+	<class>com.esl.sysdog.model.Usuario</class>
+	<class>com.esl.sysdog.model.Venda</class>
+
+     
+		
+		
+		
+		<properties>
+		    <property name="javax.persistence.jdbc.driver" value="org.mariadb.jdbc.Driver" />
+			<property name="javax.persistence.jdbc.url" value="jdbc:mariadb://localhost:3306/sysdog2" />
+			<property name="javax.persistence.jdbc.user" value="root" />
+			<property name="javax.persistence.jdbc.password" value="base1805" />
+			<property name="hibernate.dialect" value="org.hibernate.dialect.MariaDB10Dialect" />
+			
+
+			<property name="javax.persistence.schema-generation.database.action" value="update" />
+      		
+			<property name="hibernate.show_sql" value="true" />
+			<property name="hibernate.format_sql" value="true" />
+		</properties>
+		
+		
+	</persistence-unit>
+</persistence>

@@ -1,0 +1,302 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	template="/templates/modelo5.xhtml">
+	
+	
+<ui:define name="conteudo">
+	 <h:outputStylesheet library="css" name="styleBootStrap.css"/> 
+	<h:form id="formListagem">
+		<p:panel header="Lista de Usuários Cadastrados">
+			
+			<p:toolbar style="margin:5px 10px">
+					<f:facet name="left">
+						<p:commandButton value="Novo" icon="ui-icon-document"
+							actionListener="#{usuarioBeanLazy.novo}"
+							update=":mensagem :formCadastro"
+							oncomplete="PF('dialogo').show();" title="Cadastrar novo Usuário">
+							<!-- Uso do omnifaces para resetar campos depois de requisições de validação -->
+							<f:actionListener
+								type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+						</p:commandButton>
+						<span class="ui-separator"> <span
+							class="ui-icon ui-icon-grip-dotted-vertical" />
+						</span>
+					</f:facet>
+
+
+					<f:facet name="right">
+						
+					</f:facet>
+				</p:toolbar>
+			
+			<p:dataTable id="tabela" emptyMessage="Nenhum registro encontrado." lazy="true"
+				paginator="true" value="#{usuarioBeanLazy.dataModel}"
+				 var="usuario" rows="5" 
+				 paginatorPosition="bottom"  paginatorTemplate= "{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+                 rowsPerPageTemplate="5,10" >
+				
+
+				<p:column headerText="Nome" filterBy="#{usuario.nome}" style="text-align: center">
+				 <h:outputText value="#{usuario.nome}" />
+				</p:column>
+
+				<p:column headerText="Login" style="text-align: center" priority="4">
+				 <h:outputText value="#{usuario.login}" />
+				</p:column>
+				
+				<p:column headerText="Email" style="text-align: center" priority="3">
+				 <h:outputText value="#{usuario.email}" />
+				</p:column>
+				
+				<p:column headerText="Tipo" style="text-align: center" priority="2">
+				 <h:outputText value="#{usuario.tipoFormatado}" />
+				</p:column>
+				
+				<p:column headerText="Ativo" style="text-align: center" priority="4">
+				<h:outputText value="#{usuario.ativoFormatado}" />
+				</p:column>
+				
+				 <p:column headerText="Avatar" style="text-align: center" priority="1">
+				 <p:graphicImage cache="false" value="/resources/images/avatar/#{usuario.avatar.name}.png" width="60"
+								height="60" />
+				
+				</p:column>
+
+				<p:column headerText="Opções"  toggleable="false" style="text-align: center">
+			
+				
+				
+			<p:commandButton icon="ui-icon-pencil"
+						actionListener="#{usuarioBeanLazy.editar}"
+						update=":mensagem :formCadastro2"
+						oncomplete="PF('dialogo2').show();"  title="Editar Cadastro" > 
+						<f:attribute name="usuarioSelecionado" value="#{usuario}" />
+						
+						<f:actionListener type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+					</p:commandButton>
+				
+				<p:commandButton icon=" ui-icon-key"
+						actionListener="#{usuarioBeanLazy.editar}"
+						update=":mensagem :formCadastro3"
+						oncomplete="PF('dialogo3').show();"  title="Alterar Senha">
+						<f:attribute name="usuarioSelecionado" value="#{usuario}" />
+						<!-- Uso do omnifaces para resetar campos depois de requisições de validação -->
+						<f:actionListener type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+					</p:commandButton>
+				
+				</p:column>
+
+			</p:dataTable>
+		</p:panel>
+	</h:form>
+
+	<p:dialog header="Usuários - Cadastro" widgetVar="dialogo"
+		draggable="false" resizable="false" modal="true" closable="true" responsive="true">
+		
+		<h:form id="formCadastro">
+		
+		<p:tabView id="cad1" cache="false">  
+          <p:tab title="Dados Usuario"> 
+		
+			<p:panelGrid  columns="2" layout="grid" styleClass="ui-panelgrid-blank" columnClasses="ui-grid-col-4,ui-grid-col-8">
+			
+		       <p:outputLabel for="nome" value="Nome:" />
+				<p:inputText id="nome" maxlength="50" size="30"
+					value="#{usuarioBeanLazy.usuario.nome}" required="true"
+					requiredMessage="O campo 'Nome' é obrigatório" />
+			
+			 <p:outputLabel for="email" value="Email:" />
+				<p:inputText id="email" maxlength="50" size="30"
+					value="#{usuarioBeanLazy.usuario.email}" required="true"
+					requiredMessage="O campo 'Email' é obrigatório" />
+			
+			
+				<p:outputLabel for="login" value="Login:" />
+				<p:inputText id="login" maxlength="32" size="30"
+					value="#{usuarioBeanLazy.usuario.login}" required="true"
+					requiredMessage="O campo 'Login' é obrigatório" />
+				
+				
+				<p:outputLabel value="Senha:" />
+				
+				<p:password maxlength="70" size="30" 
+				            value="#{usuarioBeanLazy.usuario.senha}" 
+				            validatorMessage="Informe uma senha com no minimo 8 caracteres"
+				            feedback="true"  promptLabel="Digite a senha" weakLabel="Fraca"
+                            goodLabel="Boa" strongLabel="Forte">
+				     <f:validateLength minimum="8" />       
+				 </p:password>
+					</p:panelGrid>
+		  </p:tab>
+				
+			
+			<p:tab title="Complemento"> 
+		
+			<p:panelGrid  columns="2" layout="grid" styleClass="ui-panelgrid-blank" columnClasses="ui-grid-col-4,ui-grid-col-8">
+				
+				<p:outputLabel for="tipo" value="Tipo:" />
+				<p:selectOneButton id="tipo" value="#{usuarioBeanLazy.usuario.tipo}"
+				                required="true"  requiredMessage="O campo 'Tipo' é obrigatório" >
+				      <f:selectItem  itemValue="A" itemLabel="Administrador"/>
+				      <f:selectItem  itemValue="F" itemLabel="Funcionário"/>
+				</p:selectOneButton>
+		
+				
+				<p:outputLabel for="ativo" value="Ativo:" />
+				<p:selectBooleanCheckbox  id="ativo"
+				     value="#{usuarioBeanLazy.usuario.ativo}" required="true"
+				     requiredMessage="O campo 'Ativo' é obrigatório"/>
+			
+				<p:outputLabel for="avatar" value="Avatar:" />
+				<p:selectOneMenu id="avatar" filter="true"
+				        value="#{usuarioBeanLazy.usuario.avatar}" required="true"
+				        requiredMessage="O campo 'Avatar' é obrigatório"
+				        converter="omnifaces.SelectItemsConverter" var="p">
+				       <f:selectItem  noSelectionOption="true" itemLabel="Selecione uma Avatar"/>
+				       <f:selectItems value="#{usuarioBeanLazy.avatares}" var="avatar"
+				            itemValue="#{avatar}" itemLabel="#{avatar.name}"/>
+
+						<p:column>
+							<p:graphicImage value="/resources/images/avatar/#{p.name}.png" width="60"
+								height="60" />
+						</p:column>
+
+						<p:column>
+                           #{p.name}
+                         </p:column>
+					</p:selectOneMenu>	
+          
+				</p:panelGrid>
+		  </p:tab>
+				
+				 </p:tabView>
+			<p:separator />
+			<p:panelGrid columns="2" styleClass="ui-noborder ">
+			   <p:commandButton value="Salvar"
+			    update=":mensagem :formCadastro :formListagem:tabela" icon=" ui-icon-disk"
+			     actionListener="#{usuarioBeanLazy.salvar}"/>
+			   <p:commandButton value="Fechar" oncomplete="PF('dialogo').hide();" icon="ui-icon-closethick"/>
+			</p:panelGrid>
+		</h:form>
+	</p:dialog>
+	
+	
+	<p:dialog header="Usuários - Alterar" widgetVar="dialogo2"
+		draggable="false" resizable="false" modal="true" closable="true" responsive="true">
+		
+		<h:form id="formCadastro2">
+		
+		<p:tabView id="cad1" cache="false">  
+          <p:tab title="Dados Usuario"> 
+		
+			<p:panelGrid  columns="2" layout="grid" styleClass="ui-panelgrid-blank" columnClasses="ui-grid-col-4,ui-grid-col-8">
+			
+		       <p:outputLabel for="nome" value="Nome:" />
+				<p:inputText id="nome" maxlength="50" size="30"
+					value="#{usuarioBeanLazy.usuario.nome}" required="true"
+					requiredMessage="O campo 'Nome' é obrigatório" />
+			
+			 <p:outputLabel for="email" value="Email:" />
+				<p:inputText id="email" maxlength="50" size="30"
+					value="#{usuarioBeanLazy.usuario.email}" required="true"
+					requiredMessage="O campo 'Email' é obrigatório" />
+			
+			
+				<p:outputLabel for="login" value="Login:" />
+				<p:inputText id="login" maxlength="32" size="30"
+					value="#{usuarioBeanLazy.usuario.login}" required="true"
+					requiredMessage="O campo 'Login' é obrigatório" />
+				
+					</p:panelGrid>
+		  </p:tab>
+				
+			
+			<p:tab title="Complemento"> 
+		
+			<p:panelGrid  columns="2" layout="grid" styleClass="ui-panelgrid-blank" columnClasses="ui-grid-col-4,ui-grid-col-8">
+				
+				<p:outputLabel for="tipo" value="Tipo:" />
+				<p:selectOneButton id="tipo" value="#{usuarioBeanLazy.usuario.tipo}"
+				                required="true"  requiredMessage="O campo 'Tipo' é obrigatório" >
+				      <f:selectItem  itemValue="A" itemLabel="Administrador"/>
+				      <f:selectItem  itemValue="F" itemLabel="Funcionário"/>
+				</p:selectOneButton>
+		
+				
+				<p:outputLabel for="ativo" value="Ativo:" />
+				<p:selectBooleanCheckbox  id="ativo"
+				     value="#{usuarioBeanLazy.usuario.ativo}" required="true"
+				     requiredMessage="O campo 'Ativo' é obrigatório"/>
+			
+					<p:outputLabel for="avatar" value="Avatar:" />
+				<p:selectOneMenu id="avatar" filter="true"
+				        value="#{usuarioBeanLazy.usuario.avatar}" required="true"
+				        requiredMessage="O campo 'Avatar' é obrigatório"
+				        converter="omnifaces.SelectItemsConverter" var="p">
+				       <f:selectItem  noSelectionOption="true" itemLabel="Selecione uma Avatar"/>
+				       <f:selectItems value="#{usuarioBeanLazy.avatares}" var="avatar"
+				            itemValue="#{avatar}" itemLabel="#{avatar.name}"/>
+
+						<p:column>
+							<p:graphicImage value="/resources/images/avatar/#{p.name}.png" width="60"
+								height="60" />
+						</p:column>
+						<p:column>
+                           #{p.name}
+                         </p:column>
+					</p:selectOneMenu>		
+          
+				</p:panelGrid>
+		  </p:tab>
+				
+				 </p:tabView>
+			<p:separator />
+			<p:panelGrid columns="2" styleClass="ui-noborder ">
+			   <p:commandButton value="Salvar"
+			    update=":mensagem :formCadastro2 :formListagem:tabela" oncomplete="PF('dialogo2').hide();" icon=" ui-icon-disk"
+			     actionListener="#{usuarioBeanLazy.salvar}"/>
+			   <p:commandButton value="Fechar" oncomplete="PF('dialogo2').hide();" icon="ui-icon-closethick"/>
+			</p:panelGrid>
+		</h:form>
+	</p:dialog>
+	
+	
+	<p:dialog header="Alterar Senha" widgetVar="dialogo3"
+		draggable="false" resizable="false" modal="true" closable="true" responsive="true">
+		
+		<h:form id="formCadastro3">
+		
+		
+			<p:panelGrid  columns="2" layout="grid" styleClass="ui-panelgrid-blank" columnClasses="ui-grid-col-4,ui-grid-col-8">
+			
+		      <p:outputLabel value="Senha:" />
+				
+				<p:password maxlength="70" size="20" 
+				            value="#{usuarioBeanLazy.usuario.senha}" 
+				            validatorMessage="Informe uma senha com no minimo 8 caracteres"
+				            feedback="true"  promptLabel="Digite a senha" weakLabel="Fraca"
+                            goodLabel="Boa" strongLabel="Forte">
+				     <f:validateLength minimum="8" />       
+				 </p:password>
+				</p:panelGrid>
+	
+				
+				
+			<p:separator />
+			<p:panelGrid columns="2" styleClass="ui-noborder ">
+			   <p:commandButton value="Salvar"
+			    update=":mensagem :formCadastro3 :formListagem:tabela" oncomplete="PF('dialogo3').hide();" icon=" ui-icon-disk"
+			     actionListener="#{usuarioBeanLazy.salvarsenha}"/>
+			   <p:commandButton value="Fechar" oncomplete="PF('dialogo3').hide();" icon="ui-icon-closethick"/>
+			</p:panelGrid>
+		</h:form>
+	</p:dialog>
+	
+	
+</ui:define>
+</ui:composition>

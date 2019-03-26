@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	template="/templates/modelo5.xhtml">
+	
+<ui:define name="conteudo">
+<h:outputScript library="js" name="scripts.js"/> 
+	<h:form id="formListagem">
+		<p:panel  header="Lista de Clientes Cadastrados">
+		
+		<p:toolbar style="margin:5px 10px">
+					<f:facet name="left">
+						<p:commandButton value="Novo" icon="ui-icon-document"
+							actionListener="#{clienteBeanLazy.novo}"
+							update=":mensagem :formCadastro"
+							oncomplete="PF('dialogo').show();" title="Cadastrar novo Cliente">
+							<!-- Uso do omnifaces para resetar campos depois de requisições de validação -->
+							<f:actionListener type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+						</p:commandButton>
+						<span class="ui-separator"> <span
+							class="ui-icon ui-icon-grip-dotted-vertical" />
+						</span>
+					</f:facet>
+
+
+					<f:facet name="right">
+					<h:commandLink>
+                          <p:graphicImage value="/resources/images/excel2.png" height="34" width="34" title="Exportar para Excel"/>
+                           <p:dataExporter type="xls" target="tabela" fileName="clientes" />
+                      </h:commandLink>
+					</f:facet>
+				</p:toolbar>
+		
+		
+		
+			<p:dataTable id="tabela"  widgetVar="tabela" emptyMessage="Nenhum registro encontrado." lazy="true"
+				paginator="true" value="#{clienteBeanLazy.dataModel}"
+				var="cliente" rows="5" paginatorPosition="bottom"  paginatorTemplate= "{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+                 rowsPerPageTemplate="5,10" >
+                
+				<p:column headerText="Nome" filterBy="#{cliente.nome}" sortBy="#{cliente.nome}" style="text-align: center">
+				<h:outputText value="#{cliente.nome}" />
+				</p:column>
+
+				<p:column headerText="CPF" priority="4" style="text-align: center">
+				<h:outputText value="#{cliente.cpf}" />
+				</p:column>
+				
+				<p:column headerText="Data de Cadastro" sortBy="#{cliente.dataCadastro}" priority="4" style="text-align: center"> 
+				<h:outputText value="#{cliente.dataCadastro}">
+				<f:convertDateTime locale="pt_BR"/>
+				</h:outputText>
+				</p:column>
+				
+				<p:column headerText="Endereço"  priority="5" style="text-align: center">
+				<h:outputText value="#{cliente.endereco}" />
+				</p:column>
+				
+				<p:column headerText="Bairro" sortBy="#{cliente.bairro}" priority="5" style="text-align: center">
+				<h:outputText value="#{cliente.bairro}" />
+				</p:column>
+				
+				<p:column headerText="Cidade"  sortBy="#{cliente.cidade}" priority="5" style="text-align: center">
+				<h:outputText value="#{cliente.cidade}" />
+				<h:outputText value=" - " />
+				<h:outputText value="#{cliente.estado}" />
+				</p:column>
+				
+				<p:column headerText="CEP" priority="6" style="text-align: center">
+				<h:outputText value="#{cliente.cep}" />
+				</p:column>
+				
+				<p:column headerText="Telefone"  priority="6" style="text-align: center">
+				<h:outputText value="#{cliente.telefone}" />
+				</p:column>
+				
+				<p:column headerText="Celular" priority="1" style="text-align: center">
+				<h:outputText value="#{cliente.celular}" />
+				</p:column>
+				
+				
+				<p:column headerText="Liberado" priority="4" style="text-align: center" exportable="false">
+				<p:selectBooleanButton value="#{cliente.liberado}" onLabel="Sim" offLabel="Não"  onIcon="ui-icon-check" offIcon="ui-icon-close" disabled="true" />
+				</p:column>
+
+				<p:column headerText="Opções"  toggleable="false" exportable="false">
+				<div style="text-align: center;" >
+				<p:commandButton icon="ui-icon-pencil"
+						actionListener="#{clienteBeanLazy.editar}"
+						update=":mensagem :formCadastro"
+						oncomplete="PF('dialogo').show();" title="Editar Cadastro">
+						<f:attribute name="clienteSelecionado" value="#{cliente}" />
+						<!-- Uso do omnifaces para resetar campos depois de requisições de validação -->
+						<f:actionListener
+							type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+					</p:commandButton>
+					</div>
+				</p:column>
+
+			</p:dataTable>
+		</p:panel>
+	</h:form>
+	
+
+
+	<p:dialog header="Clientes - Cadastro" widgetVar="dialogo"
+		draggable="false" resizable="false" modal="true" closable="true" responsive="true" >
+		
+		
+		  <h:form id="formCadastro">
+		  
+		  <p:tabView id="cad1" cache="false">  
+          <p:tab title="Dados Pessoais"> 
+          
+		<p:panelGrid  columns="2" layout="grid" styleClass="ui-panelgrid-blank" columnClasses="ui-grid-col-4,ui-grid-col-8">
+    
+             <p:outputLabel for="nome" value="Nome:" />
+				<p:inputText id="nome" maxlength="50" size="30"
+					value="#{clienteBeanLazy.cliente.nome}" required="true"
+					requiredMessage="O campo 'Nome' é obrigatório" />
+					
+				<p:outputLabel for="cpf" value="Cpf:" />
+				<p:inputMask id="cpf" mask="999-999-999-99" size="15"   
+				    value="#{clienteBeanLazy.cliente.cpf}" required="true"
+				   requiredMessage="O campo 'CPF' é obrigatório"/>	
+				   
+				    <p:outputLabel for="telefone" value="Telefone:" />
+				<p:inputMask id="telefone" mask="(99)9999-9999" size="15"   
+				    value="#{clienteBeanLazy.cliente.telefone}"/>	  		
+				
+				<p:outputLabel for="celular" value="Celular:" />
+				<p:inputMask id="celular" mask="(99)99999-9999" size="15"   
+				    value="#{clienteBeanLazy.cliente.celular}" required="true"
+				   requiredMessage="O campo 'Celular' é obrigatório"/>
+				   
+				   
+			</p:panelGrid>
+			
+		   </p:tab>  
+            
+            	
+	     
+          <p:tab title="Residência" id="painel2">
+      
+         <p:panelGrid  columns="2" layout="grid" styleClass="ui-panelgrid-blank" columnClasses="ui-grid-col-4,ui-grid-col-8">
+              
+				<p:outputLabel for="endereco" value="Endereço:" />
+				<p:inputText id="endereco" maxlength="150" size="30"
+					value="#{clienteBeanLazy.cliente.endereco}" required="true"
+					requiredMessage="O campo 'Endereço' é obrigatório" />	
+					
+				<p:outputLabel for="bairro" value="Bairro:" />
+				<p:autoComplete   id="bairro" maxlength="30" size="30" maxResults="5"
+					value="#{clienteBeanLazy.cliente.bairro}" required="true"
+					requiredMessage="O campo 'Bairro' é obrigatório" 
+					completeMethod="#{clienteBeanLazy.pesquisarBairro}"/>		
+					
+				<p:outputLabel for="cidade" value="Cidade:" />
+				<p:autoComplete   id="cidade" maxlength="30" size="30" maxResults="5"
+					value="#{clienteBeanLazy.cliente.cidade}" required="true"
+					requiredMessage="O campo 'Bairro' é obrigatório" 
+					completeMethod="#{clienteBeanLazy.pesquisarCidade}"/>	
+				
+				 <p:outputLabel for="estado" value="Estado:" />
+				<p:inputText id="estado" maxlength="2" size="4"
+					value="#{clienteBeanLazy.cliente.estado}" required="true"
+					requiredMessage="O campo 'Estado' é obrigatório" />	
+			
+				
+			</p:panelGrid>
+		
+		   </p:tab>  
+           
+            
+        
+          <p:tab title="Cadastro" id="painel3">
+          	<p:panelGrid  columns="2" layout="grid" styleClass="ui-panelgrid-blank" columnClasses="ui-grid-col-4,ui-grid-col-8">
+          		
+				<p:outputLabel for="cep" value="Cep:" />
+				<p:inputMask id="cep" mask="99999-999" size="10"   
+				    value="#{clienteBeanLazy.cliente.cep}" required="true"
+				   requiredMessage="O campo 'CEP' é obrigatório"/>
+				   
+				 <p:outputLabel for="email" value="Email:" />
+				<p:inputText id="email" maxlength="50" size="30"
+					value="#{clienteBeanLazy.cliente.email}"/>	  	  		   
+			
+				<p:outputLabel for="dataCadastro" value="Data de Cadastro:" />
+				<p:calendar id="dataCadastro" value="#{clienteBeanLazy.cliente.dataCadastro}" required="true"
+				   requiredMessage="O campo 'Data de Cadastro' é obrigatório" locale="pt" pattern="dd/MM/yyyy"/>
+				   
+				<p:outputLabel for="liberado" value="Liberado:" />
+				<p:selectBooleanCheckbox id="liberado" 
+				  value="#{clienteBeanLazy.cliente.liberado}"
+				  rrequired="true"
+				   requiredMessage="O campo 'Liberado' é obrigatório"/>
+
+				
+			</p:panelGrid>
+		   </p:tab>  
+            </p:tabView> 
+            
+			<p:separator />
+			<p:panelGrid columns="2" styleClass="ui-noborder ">
+			   <p:commandButton value="Salvar"
+			   actionListener="#{clienteBeanLazy.salvar}" icon=" ui-icon-disk"
+			   update=":mensagem :formCadastro :formListagem:tabela"/>
+			   <p:commandButton value="Fechar" oncomplete="PF('dialogo').hide();" icon="ui-icon-closethick"/>
+			</p:panelGrid>
+		
+    </h:form>
+		
+		
+	</p:dialog>
+</ui:define>
+</ui:composition>

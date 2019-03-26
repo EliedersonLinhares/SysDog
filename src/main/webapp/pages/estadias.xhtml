@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	template="/templates/modelo5.xhtml">
+
+
+<ui:define name="conteudo">
+
+
+
+<h:outputScript library="js" name="scripts.js"/> 
+
+<h:form id="formEvento">
+ 
+
+        <p:schedule widgetVar="meuCalendario" value="#{estadiaBeanLazy.lazyEventModel}" id="calendario" locale="pt" timeZone="America/Sao_Paulo" timeFormat="HH:mm" >
+        
+ <p:ajax event="eventSelect" listener="#{estadiaBeanLazy.selecionado}" update=":mensagem :formCadastro:cad1" oncomplete="PF('dialogo').show();"  resetValues="true"/>  
+        
+  
+       
+      
+       
+
+        
+       <p:ajax event="dateSelect" listener="#{estadiaBeanLazy.Novo}" update=":mensagem :formCadastro2:cad2" oncomplete="PF('dialogo2').show();" resetValues="true" />
+	
+          
+				
+		<p:ajax event="eventMove" listener="#{estadiaBeanLazy.mover}" update=":formEvento:calendario" />
+		<p:ajax event="eventResize" listener="#{estadiaBeanLazy.redimensionar}" update=":formEvento:calendario" />
+					
+						
+       
+       
+        </p:schedule>
+        
+   </h:form>     
+       
+        <p:dialog  widgetVar="dialogo" header="Estadia - Alteração" draggable="false" resizable="false" modal="true" closable="true" responsive="true" width="600">
+        <h:form id="formCadastro">
+       
+       
+        <p:tabView id="cad1" cache="false">  
+        <p:tab title="Dados da Estadia"> 
+        
+        <p:panelGrid  columns="2" layout="grid" styleClass="ui-panelgrid-blank" columnClasses="ui-grid-col-4,ui-grid-col-8">
+        
+        
+           <p:outputLabel value="Status:"/>
+        <p:selectOneButton id="tipo" value="#{estadiaBeanLazy.estadia.status}" disabled="#{estadiaBeanLazy.estadia.status eq false}"
+				                required="true"  requiredMessage="O campo 'Status' é obrigatório" >
+				      <f:selectItem  itemValue="true" itemLabel="Aberto" />
+				     <f:selectItem  itemValue="false" itemLabel="Fechado" /> 
+				</p:selectOneButton>	
+        
+         <p:outputLabel for="animal" value="Animal:" />
+				<p:selectOneMenu id="animal" filter="true"
+				converter="omnifaces.SelectItemsConverter"
+				 value="#{estadiaBeanLazy.estadia.animal}" required="true"
+				 requiredMessage="O campo 'Animal' é obrigatório"  disabled="#{estadiaBeanLazy.estadia.status eq false}">
+				       <f:selectItem  noSelectionOption="true" itemLabel="Selecione uma animal"/>
+				       <f:selectItems value="#{estadiaBeanLazy.animais}" var="animal"
+				       itemValue="#{animal}" itemLabel="#{animal.nome} - Dono: #{animal.cliente.nome}"/>
+				</p:selectOneMenu>
+		
+		 <p:outputLabel for="local" value="Local:" />
+				<p:selectOneMenu id="local" filter="true"
+				converter="omnifaces.SelectItemsConverter"
+				 value="#{estadiaBeanLazy.estadia.local}" required="true"
+				 requiredMessage="O campo 'Local' é obrigatório" disabled="#{estadiaBeanLazy.estadia.status eq false}">
+				       <f:selectItem  noSelectionOption="true" itemLabel="Selecione um local"/>
+				       <f:selectItems value="#{estadiaBeanLazy.locais}" var="local"
+				       itemValue="#{local}" itemLabel="#{local.descricao} - #{local.cidade}/#{local.estado}"/>
+				</p:selectOneMenu>
+				
+        <p:outputLabel for="usuario" value="Usuário:" />
+				<p:selectOneMenu id="usuario" 
+					value="#{estadiaBeanLazy.estadia.usuario}"
+					converter="omnifaces.SelectItemsConverter"  
+					 disabled="#{estadiaBeanLazy.estadia.status eq false}">
+					<f:selectItem itemValue="#{autenticacaoBean.usuarioLogado}"
+						itemLabel="#{autenticacaoBean.usuarioLogado.nome}" />
+					
+				</p:selectOneMenu>
+        
+                 </p:panelGrid>
+		   </p:tab>  
+		   
+        <p:tab title="Datas e valores"> 
+        <p:panelGrid  columns="2" layout="grid" styleClass="ui-panelgrid-blank" columnClasses="ui-grid-col-4,ui-grid-col-8">
+        
+        <p:outputLabel value="Data de Entrada:"/>
+        <p:calendar value="#{estadiaBeanLazy.estadia.dataEntrada}" pattern="dd/MM/yyyy HH:mm:ss" locale="pt" timeZone="America/Sao_Paulo" disabled="#{estadiaBeanLazy.estadia.status eq false}"/>
+        
+        <p:outputLabel value="Data de Saida:"/>
+        <p:calendar value="#{estadiaBeanLazy.estadia.dataSaida}" pattern="dd/MM/yyyy HH:mm:ss" locale="pt" timeZone="America/Sao_Paulo" disabled="#{estadiaBeanLazy.estadia.status eq false}"/>
+ 
+         <p:outputLabel for="valor" value="Valor Cobrado(R$):"/>
+       <p:inputNumber id="valor" 
+					value="#{estadiaBeanLazy.estadia.valorCobrado}" required="true"
+					requiredMessage="O campo 'Valor Cobrado' é obrigatório" symbol="R$ " symbolPosition="p"   maxlength="6" size="12" />
+        
+         <p:outputLabel for="desconto" value="Desconto(R$):"/>
+        <p:inputNumber id="desconto" value="#{estadiaBeanLazy.estadia.desconto}"  required="true"  requiredMessage="O campo 'Desconto' é obrigatório"  disabled="#{estadiaBeanLazy.estadia.status eq false}"
+        symbol="R$ " symbolPosition="p"   maxlength="6" size="12"/>
+        
+               </p:panelGrid>
+		   </p:tab>  
+		   
+       <p:tab title="Custos"> 
+        <p:panelGrid  columns="2" layout="grid" styleClass="ui-panelgrid-blank" columnClasses="ui-grid-col-4,ui-grid-col-8">
+		 
+		  <p:outputLabel for="racao" value="Ração(R$):"/>
+        <p:inputNumber id="racao" value="#{estadiaBeanLazy.estadia.gastoRacao}"  required="true"  requiredMessage="O campo 'Ração' é obrigatório"  disabled="#{estadiaBeanLazy.estadia.status eq false}"
+        symbol="R$ " symbolPosition="p"   maxlength="6" size="12"/>
+		 
+		  <p:outputLabel for="vacina" value="Vacina(R$):"/>
+        <p:inputNumber id="vacina" value="#{estadiaBeanLazy.estadia.gastoVacina}"  required="true"  requiredMessage="O campo 'Vacina' é obrigatório"  disabled="#{estadiaBeanLazy.estadia.status eq false}"
+        symbol="R$ " symbolPosition="p"   maxlength="6" size="12"/>
+		 
+		  <p:outputLabel for="outros" value="Outros(R$):"/>
+        <p:inputNumber id="outros" value="#{estadiaBeanLazy.estadia.gastoOutros}"  required="true"  requiredMessage="O campo 'Outros' é obrigatório"  disabled="#{estadiaBeanLazy.estadia.status eq false}"
+        symbol="R$ " symbolPosition="p"   maxlength="6" size="12"/>
+		 
+		   <p:outputLabel  value="Descrição(R$):"/>
+        <p:inputText value="#{estadiaBeanLazy.estadia.descricao}" maxlength="100" size="30" disabled="#{estadiaBeanLazy.estadia.status eq false}"/>
+				
+		</p:panelGrid>
+		   </p:tab>
+		   
+		 <p:tab title="Total"> 
+        <p:panelGrid  columns="2" layout="grid" styleClass="ui-panelgrid-blank" columnClasses="ui-grid-col-4,ui-grid-col-8">
+		 
+		<p:outputLabel  value="Total:"/>
+        <h:outputText  value="#{estadiaBeanLazy.estadia.total}">
+					<f:convertNumber locale="pt_BR" minFractionDigits="2" />
+				</h:outputText>
+				
+		</p:panelGrid>
+		   </p:tab>  	  
+		    						
+	
+   </p:tabView> 
+        <p:separator/>
+        <p:panelGrid columns="2" styleClass="ui-noborder ">
+        <p:commandButton value="Salvar" actionListener="#{estadiaBeanLazy.salvar2}" update=":mensagem  :formCadastro:cad1 :formEvento:calendario"  icon=" ui-icon-disk">
+        </p:commandButton>
+         <p:commandButton value="Fechar" oncomplete="PF('dialogo').hide();" icon="ui-icon-closethick"/>
+      </p:panelGrid>
+        
+
+    </h:form>   
+        </p:dialog>
+        
+        
+ <p:dialog  widgetVar="dialogo2" header="Estadia - Cadastro" draggable="false" resizable="false" modal="true" closable="true" responsive="true" width="600">
+        <h:form id="formCadastro2">
+       
+       
+        <p:tabView id="cad2" cache="false">  
+        <p:tab title="Dados da Estadia"> 
+        
+        <p:panelGrid  columns="2" layout="grid" styleClass="ui-panelgrid-blank" columnClasses="ui-grid-col-4,ui-grid-col-8">
+        
+          <p:outputLabel value="Status:"/>
+        <p:selectOneButton id="tipo" value="#{estadiaBeanLazy.estadia.status}" disabled="#{estadiaBeanLazy.estadia.status eq false}"
+				                required="true"  requiredMessage="O campo 'Status' é obrigatório" >
+				      <f:selectItem  itemValue="true" itemLabel="Aberto" />
+        </p:selectOneButton>
+         <p:outputLabel for="animal" value="Animal:" />
+				<p:selectOneMenu id="animal" filter="true"
+				converter="omnifaces.SelectItemsConverter"
+				 value="#{estadiaBeanLazy.estadia.animal}" required="true"
+				 requiredMessage="O campo 'Animal' é obrigatório"  disabled="#{estadiaBeanLazy.estadia.status eq false}">
+				       <f:selectItem  noSelectionOption="true" itemLabel="Selecione uma animal"/>
+				       <f:selectItems value="#{estadiaBeanLazy.animais}" var="animal"
+				       itemValue="#{animal}" itemLabel="#{animal.nome} - Dono: #{animal.cliente.nome}"/>
+				</p:selectOneMenu>
+		
+		 <p:outputLabel for="local" value="Local:" />
+				<p:selectOneMenu id="local" filter="true"
+				converter="omnifaces.SelectItemsConverter"
+				 value="#{estadiaBeanLazy.estadia.local}" required="true"
+				 requiredMessage="O campo 'Local' é obrigatório" disabled="#{estadiaBeanLazy.estadia.status eq false}">
+				       <f:selectItem  noSelectionOption="true" itemLabel="Selecione um local"/>
+				       <f:selectItems value="#{estadiaBeanLazy.locais}" var="local"
+				       itemValue="#{local}" itemLabel="#{local.descricao} - #{local.cidade}/#{local.estado}"/>
+				</p:selectOneMenu>
+				     
+				
+				
+		<p:outputLabel for="usuario" value="Usuário:" />
+				<p:selectOneMenu id="usuario" 
+					value="#{estadiaBeanLazy.estadia.usuario}"
+					converter="omnifaces.SelectItemsConverter"  
+					 disabled="#{estadiaBeanLazy.estadia.status eq false}">
+					<f:selectItem itemValue="#{autenticacaoBean.usuarioLogado}"
+						itemLabel="#{autenticacaoBean.usuarioLogado.nome}" />
+					
+				</p:selectOneMenu>			
+
+                 </p:panelGrid>
+		   </p:tab>  
+		   
+        <p:tab title="Datas e valores"> 
+        <p:panelGrid  columns="2" layout="grid" styleClass="ui-panelgrid-blank" columnClasses="ui-grid-col-4,ui-grid-col-8">
+        
+        <p:outputLabel value="Data de Entrada:"/>
+        <p:calendar value="#{estadiaBeanLazy.estadia.dataEntrada}" pattern="dd/MM/yyyy HH:mm:ss" locale="pt" timeZone="America/Sao_Paulo" disabled="#{estadiaBeanLazy.estadia.status eq false}"/>
+        
+        <p:outputLabel value="Data de Saida:"/>
+        <p:calendar value="#{estadiaBeanLazy.estadia.dataSaida}" pattern="dd/MM/yyyy HH:mm:ss" locale="pt" timeZone="America/Sao_Paulo" disabled="#{estadiaBeanLazy.estadia.status eq false}"/>
+ 
+         <p:outputLabel for="valor" value="Valor Cobrado:"/>
+        <p:inputNumber id="valor" value="#{estadiaBeanLazy.estadia.valorCobrado}"  required="true"  requiredMessage="O campo 'Valor Cobrado' é obrigatório" disabled="#{estadiaBeanLazy.estadia.status eq false}"
+        symbol="R$ " symbolPosition="p"   maxlength="6" size="12"/>
+        
+         <p:outputLabel for="desconto" value="Desconto:"/>
+        <p:inputNumber id="desconto" value="#{estadiaBeanLazy.estadia.desconto}"  required="true"  requiredMessage="O campo 'Desconto' é obrigatório"  disabled="#{estadiaBeanLazy.estadia.status eq false}"
+        symbol="R$ " symbolPosition="p"   maxlength="6" size="12"/>
+        
+               </p:panelGrid>
+		   </p:tab>  
+		   
+        <p:tab title="Custos"> 
+        <p:panelGrid  columns="2" layout="grid" styleClass="ui-panelgrid-blank" columnClasses="ui-grid-col-4,ui-grid-col-8">
+		 
+		  <p:outputLabel for="racao" value="Ração:"/>
+        <p:inputNumber id="racao" value="#{estadiaBeanLazy.estadia.gastoRacao}"  required="true"  requiredMessage="O campo 'Ração' é obrigatório"  disabled="#{estadiaBeanLazy.estadia.status eq false}"
+        symbol="R$ " symbolPosition="p"   maxlength="6" size="12"/>
+		 
+		  <p:outputLabel for="vacina" value="Vacina:"/>
+        <p:inputNumber id="vacina" value="#{estadiaBeanLazy.estadia.gastoVacina}"  required="true"  requiredMessage="O campo 'Vacina' é obrigatório"  disabled="#{estadiaBeanLazy.estadia.status eq false}"
+        symbol="R$ " symbolPosition="p"   maxlength="6" size="12"/>
+		 
+		  <p:outputLabel for="outros" value="Outros:"/>
+        <p:inputNumber id="outros" value="#{estadiaBeanLazy.estadia.gastoOutros}"  required="true"  requiredMessage="O campo 'Outros' é obrigatório"  disabled="#{estadiaBeanLazy.estadia.status eq false}"
+        symbol="R$ " symbolPosition="p"   maxlength="6" size="12"/>
+		 
+		   <p:outputLabel  value="Descrição:"/>
+        <p:inputText value="#{estadiaBeanLazy.estadia.descricao}" maxlength="100" size="30" disabled="#{estadiaBeanLazy.estadia.status eq false}"/>
+				
+		</p:panelGrid>
+		   </p:tab>  
+		   
+		   
+	
+	
+   </p:tabView> 
+        <p:separator/>
+        <p:panelGrid columns="2" styleClass="ui-noborder ">
+        <p:commandButton value="Salvar" actionListener="#{estadiaBeanLazy.salvar2}" update=":mensagem  :formCadastro2:cad2 :formEvento:calendario"  icon=" ui-icon-disk">
+        </p:commandButton>
+         <p:commandButton value="Fechar" oncomplete="PF('dialogo2').hide();" icon="ui-icon-closethick"/>
+      </p:panelGrid>
+        
+
+    </h:form>   
+        </p:dialog>
+
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+</ui:define>
+</ui:composition>
