@@ -81,7 +81,7 @@ causadas pelo interação bootstrap com Primefaces.
 
 ## Versão
 
-A versão colocada aqui é a usada durande o desenvolvimento sendo considerada versão beta 0.1
+A versão colocada aqui é a usada durante o desenvolvimento sendo considerada versão beta 0.1
 
 ## Sobre o Projeto
 
